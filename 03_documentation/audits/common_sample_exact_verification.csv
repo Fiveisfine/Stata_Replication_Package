@@ -1,0 +1,10 @@
+﻿sample,moderator,models,N_verified,identical_firm_years
+common_full,none,10,25623,True
+common_full,Pollute,10,25623,True
+common_full,green_z,10,12677,True
+common_no2021_no2023,none,10,19104,True
+common_no2021_no2023,Pollute,10,19104,True
+common_no2021_no2023,green_z,10,8304,True
+common_no2023,none,10,22316,True
+common_no2023,Pollute,10,22316,True
+common_no2023,green_z,10,10300,True

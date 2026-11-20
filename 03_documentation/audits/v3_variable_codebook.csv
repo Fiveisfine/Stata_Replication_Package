@@ -1,0 +1,157 @@
+﻿variable,definition,radius_km,unit,rule_source,note
+retail_1km,retail,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+bar_1km,bar,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightclub_1km,nightclub,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+ktv_1km,ktv,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+disco_1km,disco,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+combined_1km,combined,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightlife_1km,nightlife,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+assisted_combined_1km,assisted_combined,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+old_keyword_1km,old_keyword,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+total_1km,total,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+restaurant_1km,restaurant,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+entertainment_1km,entertainment,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+shopping_1km,shopping,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nonalcohol_total_1km,nonalcohol_total,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_retail_1km,without_retail,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_bar_1km,without_bar,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_nightclub_1km,without_nightclub,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_ktv_1km,without_ktv,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_disco_1km,without_disco,1.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+retail_3km,retail,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+bar_3km,bar,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightclub_3km,nightclub,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+ktv_3km,ktv,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+disco_3km,disco,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+combined_3km,combined,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightlife_3km,nightlife,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+assisted_combined_3km,assisted_combined,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+old_keyword_3km,old_keyword,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+total_3km,total,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+restaurant_3km,restaurant,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+entertainment_3km,entertainment,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+shopping_3km,shopping,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nonalcohol_total_3km,nonalcohol_total,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_retail_3km,without_retail,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_bar_3km,without_bar,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_nightclub_3km,without_nightclub,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_ktv_3km,without_ktv,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_disco_3km,without_disco,3.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+retail_5km,retail,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+bar_5km,bar,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightclub_5km,nightclub,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+ktv_5km,ktv,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+disco_5km,disco,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+combined_5km,combined,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightlife_5km,nightlife,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+assisted_combined_5km,assisted_combined,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+old_keyword_5km,old_keyword,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+total_5km,total,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+restaurant_5km,restaurant,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+entertainment_5km,entertainment,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+shopping_5km,shopping,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nonalcohol_total_5km,nonalcohol_total,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_retail_5km,without_retail,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_bar_5km,without_bar,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_nightclub_5km,without_nightclub,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_ktv_5km,without_ktv,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_disco_5km,without_disco,5.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+retail_10km,retail,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+bar_10km,bar,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightclub_10km,nightclub,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+ktv_10km,ktv,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+disco_10km,disco,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+combined_10km,combined,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nightlife_10km,nightlife,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+assisted_combined_10km,assisted_combined,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+old_keyword_10km,old_keyword,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+total_10km,total,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+restaurant_10km,restaurant,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+entertainment_10km,entertainment,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+shopping_10km,shopping,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+nonalcohol_total_10km,nonalcohol_total,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_retail_10km,without_retail,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_bar_10km,without_bar,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_nightclub_10km,without_nightclub,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_ktv_10km,without_ktv,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+without_disco_10km,without_disco,10.0,POI count; missing if unusable coverage,01_code/classify.py; 01_code/03_match.py,"Independent local-source reconstruction, not a reproduced CSMAR field."
+log_retail_1km,ln(1 + retail_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_bar_1km,ln(1 + bar_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightclub_1km,ln(1 + nightclub_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_ktv_1km,ln(1 + ktv_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_disco_1km,ln(1 + disco_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_combined_1km,ln(1 + combined_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightlife_1km,ln(1 + nightlife_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_assisted_combined_1km,ln(1 + assisted_combined_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_old_keyword_1km,ln(1 + old_keyword_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_total_1km,ln(1 + total_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_restaurant_1km,ln(1 + restaurant_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_entertainment_1km,ln(1 + entertainment_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_shopping_1km,ln(1 + shopping_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nonalcohol_total_1km,ln(1 + nonalcohol_total_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_retail_1km,ln(1 + without_retail_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_bar_1km,ln(1 + without_bar_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_nightclub_1km,ln(1 + without_nightclub_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_ktv_1km,ln(1 + without_ktv_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_disco_1km,ln(1 + without_disco_1km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_retail_3km,ln(1 + retail_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_bar_3km,ln(1 + bar_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightclub_3km,ln(1 + nightclub_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_ktv_3km,ln(1 + ktv_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_disco_3km,ln(1 + disco_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_combined_3km,ln(1 + combined_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightlife_3km,ln(1 + nightlife_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_assisted_combined_3km,ln(1 + assisted_combined_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_old_keyword_3km,ln(1 + old_keyword_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_total_3km,ln(1 + total_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_restaurant_3km,ln(1 + restaurant_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_entertainment_3km,ln(1 + entertainment_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_shopping_3km,ln(1 + shopping_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nonalcohol_total_3km,ln(1 + nonalcohol_total_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_retail_3km,ln(1 + without_retail_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_bar_3km,ln(1 + without_bar_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_nightclub_3km,ln(1 + without_nightclub_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_ktv_3km,ln(1 + without_ktv_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_disco_3km,ln(1 + without_disco_3km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_retail_5km,ln(1 + retail_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_bar_5km,ln(1 + bar_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightclub_5km,ln(1 + nightclub_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_ktv_5km,ln(1 + ktv_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_disco_5km,ln(1 + disco_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_combined_5km,ln(1 + combined_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightlife_5km,ln(1 + nightlife_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_assisted_combined_5km,ln(1 + assisted_combined_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_old_keyword_5km,ln(1 + old_keyword_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_total_5km,ln(1 + total_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_restaurant_5km,ln(1 + restaurant_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_entertainment_5km,ln(1 + entertainment_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_shopping_5km,ln(1 + shopping_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nonalcohol_total_5km,ln(1 + nonalcohol_total_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_retail_5km,ln(1 + without_retail_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_bar_5km,ln(1 + without_bar_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_nightclub_5km,ln(1 + without_nightclub_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_ktv_5km,ln(1 + without_ktv_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_disco_5km,ln(1 + without_disco_5km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_retail_10km,ln(1 + retail_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_bar_10km,ln(1 + bar_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightclub_10km,ln(1 + nightclub_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_ktv_10km,ln(1 + ktv_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_disco_10km,ln(1 + disco_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_combined_10km,ln(1 + combined_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nightlife_10km,ln(1 + nightlife_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_assisted_combined_10km,ln(1 + assisted_combined_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_old_keyword_10km,ln(1 + old_keyword_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_total_10km,ln(1 + total_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_restaurant_10km,ln(1 + restaurant_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_entertainment_10km,ln(1 + entertainment_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_shopping_10km,ln(1 + shopping_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_nonalcohol_total_10km,ln(1 + nonalcohol_total_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_retail_10km,ln(1 + without_retail_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_bar_10km,ln(1 + without_bar_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_nightclub_10km,ln(1 + without_nightclub_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_ktv_10km,ln(1 + without_ktv_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+log_without_disco_10km,ln(1 + without_disco_10km),,"log count, capped at fixed benchmark p1/p99",02_audit/winsorization_thresholds.csv,Underlying counts are retained separately.
+csmar,"Original supplier aggregate field, capped for the v3 experiment",,log supplier count,referenced original combined DTA,Supplier snapshots and processing rules remain incompletely documented.
+old_v2,ln(1 + old v2 reconstructed broad-keyword count),,"log count, capped",original alcohol_poi_5km,Kept separate from the same-pipeline v3 old_keyword construction.
+usable_experimental,"All selected source files processed, observed local POIs, no known missing province",,0/1,03_match.py,"Technical availability flag, not proof of complete historical coverage or construct validity."
+temporal_metadata_risk,2021 archive labelled with mixed/older query timestamps,,0/1,2021_query_time_summary.csv,Query dates are not opening/closing dates. No automatic source-year reassignment.

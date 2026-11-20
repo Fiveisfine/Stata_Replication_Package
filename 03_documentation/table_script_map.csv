@@ -1,0 +1,11 @@
+manuscript_item,script,primary_output,notes
+Table 3,01_code/02_tables_3_to_5.do,04_results/tables_3_to_5.csv,Firm-year and firm-industry-year fixed effects
+Table 4,01_code/02_tables_3_to_5.do,04_results/tables_3_to_5.csv,Archived common sample excluding 2019 with nonfinancial non-ST POI-source and complete-control requirements
+Table 5,01_code/02_tables_3_to_5.do,04_results/tables_3_to_5.csv,Clustering outcomes period FE lag and high-zero checks
+Table 6,01_code/03_tables_6_to_7.do,04_results/tables_6_to_7.csv,InvestorGreen and Pollute moderation
+Table 7,01_code/03_tables_6_to_7.do,04_results/tables_6_to_7.csv,Pollute conditional slopes by sample period
+Figure 1,01_code/03_tables_6_to_7.do,04_results/figures/investorgreen_margins_full.png,InvestorGreen marginal association
+Figure 2,01_code/03_tables_6_to_7.do,04_results/figures/pollute_conditional_slopes.png,Pollute conditional slopes
+Appendix A,01_code/02_tables_3_to_5.do,04_results/samples/estimation_sample_flags.csv,Model-specific sample indicators
+Appendix D,01_code/04_appendix_sensitivity.do,04_results/appendix_sensitivity.csv,MCA scaling and POI-construction sensitivity
+Appendix G,01_code/04_appendix_sensitivity.do,04_results/appendix_sensitivity.csv,ReconstructedPOI radii and categories

@@ -1,0 +1,214 @@
+{
+  "geometry": {
+    "independent_haversine_vs_chord_counts": "passed",
+    "firm_points": 20,
+    "poi_points": 100,
+    "radii_km": [
+      1,
+      3,
+      5,
+      10
+    ]
+  },
+  "output_checks": [
+    {
+      "file": "poi_2012_as_provided.parquet",
+      "N": 2130,
+      "usable": 2130,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2012_poi_wgs_office_bd09_assumed.parquet",
+      "N": 2130,
+      "usable": 2130,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2012_poi_wgs_office_wgs_assumed.parquet",
+      "N": 2130,
+      "usable": 2130,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2013_as_provided.parquet",
+      "N": 2214,
+      "usable": 2214,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2013_poi_wgs_office_bd09_assumed.parquet",
+      "N": 2214,
+      "usable": 2214,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2013_poi_wgs_office_wgs_assumed.parquet",
+      "N": 2214,
+      "usable": 2214,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2015_as_provided.parquet",
+      "N": 2515,
+      "usable": 2515,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2015_poi_wgs_office_bd09_assumed.parquet",
+      "N": 2515,
+      "usable": 2515,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2015_poi_wgs_office_wgs_assumed.parquet",
+      "N": 2515,
+      "usable": 2515,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2016_as_provided.parquet",
+      "N": 2791,
+      "usable": 2791,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2016_poi_wgs_office_bd09_assumed.parquet",
+      "N": 2791,
+      "usable": 2791,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2016_poi_wgs_office_wgs_assumed.parquet",
+      "N": 2791,
+      "usable": 2790,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2017_as_provided.parquet",
+      "N": 3153,
+      "usable": 3153,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2017_poi_wgs_office_bd09_assumed.parquet",
+      "N": 3153,
+      "usable": 3153,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2017_poi_wgs_office_wgs_assumed.parquet",
+      "N": 3153,
+      "usable": 3152,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2018_as_provided.parquet",
+      "N": 3233,
+      "usable": 3233,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2018_poi_wgs_office_bd09_assumed.parquet",
+      "N": 3233,
+      "usable": 3233,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2018_poi_wgs_office_wgs_assumed.parquet",
+      "N": 3233,
+      "usable": 3233,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2019_as_provided.parquet",
+      "N": 3408,
+      "usable": 3408,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2019_poi_wgs_office_bd09_assumed.parquet",
+      "N": 3408,
+      "usable": 3408,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2019_poi_wgs_office_wgs_assumed.parquet",
+      "N": 3408,
+      "usable": 3408,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2020_as_provided.parquet",
+      "N": 3814,
+      "usable": 3810,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2020_poi_wgs_office_bd09_assumed.parquet",
+      "N": 3814,
+      "usable": 3809,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2020_poi_wgs_office_wgs_assumed.parquet",
+      "N": 3814,
+      "usable": 3809,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2021_as_provided.parquet",
+      "N": 4274,
+      "usable": 4266,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2021_poi_wgs_office_bd09_assumed.parquet",
+      "N": 4274,
+      "usable": 4261,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2021_poi_wgs_office_wgs_assumed.parquet",
+      "N": 4274,
+      "usable": 4261,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2022_as_provided.parquet",
+      "N": 4611,
+      "usable": 4610,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2022_poi_wgs_office_bd09_assumed.parquet",
+      "N": 4611,
+      "usable": 4604,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2022_poi_wgs_office_wgs_assumed.parquet",
+      "N": 4611,
+      "usable": 4604,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2023_as_provided.parquet",
+      "N": 4837,
+      "usable": 4014,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2023_poi_wgs_office_bd09_assumed.parquet",
+      "N": 4837,
+      "usable": 4004,
+      "invariants": "passed"
+    },
+    {
+      "file": "poi_2023_poi_wgs_office_wgs_assumed.parquet",
+      "N": 4837,
+      "usable": 4005,
+      "invariants": "passed"
+    }
+  ],
+  "classification_fixture": "passed"
+}

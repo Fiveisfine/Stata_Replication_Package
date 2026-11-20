@@ -1,0 +1,15 @@
+﻿reviewer_topic,question,evidence_output,scope,remaining_limit
+R1 round1 POI documentation / R3 round1 minor 3,来源、分类、坐标、快照,02_audit/source_inventory.csv;source_timestamp_schema_probes.csv;coordinate_reference_declarations.csv,Partly addressable,原供应商快照和实际坐标体系仍未完整核实
+R1/R2/R3 round1 category validity,五类、名称辅助、逐类剔除,05_results/model_results.csv: category / leave_one_category_out,Experimental analysis,独立测量，不能称为CSMAR原指标的分类复现
+R1/R2 round1 radius sensitivity,1/3/5/10公里,05_results/model_results.csv: radius,Experimental analysis,真实办公地址与源坐标体系仍有限制
+R1 round2 POI discontinuity / R2 round2 primary sample,2023、省年覆盖、逐年影响,02_audit/province_year_comparison.csv;05_results/model_results.csv: leave_one_year_out,Experimental analysis,广东源文件缺失，原江苏归零原因未获供应商确认
+R1/R2 round2 archived-vs-rebuilt exposure,同样本、同处理流程的新旧口径比较,05_results/model_results.csv: measurement_comparison,Experimental analysis,历史原供应商原始POI不可得
+R1 round2 commercial controls,先计数相减后对数、共同样本比较,05_results/model_results.csv: commercial_controls / joint_commercial_controls,Experimental analysis,一般商业指标分类仍受源资料覆盖影响
+R1/R2 round2 moderator sensitivity,两组斜率、斜率差、年度尺度、含/不含2023,05_results/model_results.csv;02_audit/investorgreen_selection.csv,Experimental analysis,InvestorGreen词典和分母、Pollute完整交叉映射未恢复
+R1 round2 replication package,软件、代码、输入指纹、逐模型样本,01_code;06_logs/environment.json;05_results/estimation_samples,Local reproducibility,新Stata运行未执行；原数据许可仍适用
+R1/R2 round2 MCA provenance and overlap,2022及量纲与样本衔接,02_audit/mca_workbook_annual_reconciliation.csv;05_results/archived_mca_overlap_baselines.csv,Workbook and archived panel verified,未重新提取报告文本或恢复项目词典及延伸方法
+R1 round2 sample reconciliation,归档额外492条与高零省年,02_audit/archived_2023_sample_reconciliation.csv;archived_high_zero_province_years.csv;archived_sample_province_year_coverage.csv,Archived specs independently checked,供应商归零原因仍未知；上游金融和ST/PT操作的顺序未获原始记录确认
+R1 round2 cluster trust and ClimateAny,实际样本迁移与聚类及信任变量组内变异,05_results/archived_clustering_and_mobility.csv;02_audit/archived_trust_identification.csv;07_report/POI_Experimental_Findings_CN.md,Archived analysis and logs,ClimateAny条件Logit引用已有Stata日志；未新运行
+R1 round2 transformations and timing,asinh与真实日历滞后,05_results/model_results.csv: functional_form / calendar_lag_common_sample,Experimental analysis,较严格的样本不等同于归档样本
+R1/R2 round2 source dates and labels,2021查询时间与2022类目覆盖,02_audit/2021_query_time_summary.csv;05_results/category_coverage_sensitivity.csv,Experimental analysis,查询时间不是开关店日期；名称辅助需独立验证
+R1/R2/R3 round2 abstract and conclusion,结果解释和基准样本量,07_report/POI_Experimental_Findings_CN.md,Deferred as requested,按要求暂不改稿及回复信

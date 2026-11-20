@@ -1,0 +1,9 @@
+{
+  "candidate_firms": 3950,
+  "firms_with_any_status_change": 136,
+  "firms_with_consecutive_year_status_change": 56,
+  "industry_year_cells": 156,
+  "mixed_industry_year_cells": 27,
+  "within_FE_residual_sd": 0.08478831120341478,
+  "note": "Verifies variation in the supplied indicator; does not recover the supplier designation rules."
+}

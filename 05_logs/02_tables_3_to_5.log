@@ -1,0 +1,1431 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <project_root>/05_logs/02_tables_3_to_5.log
+  log type:  text
+ opened on:  19 Nov 2026, 15:46:44
+
+. 
+. use "$PANEL", clear
+
+. xtset firm_id year
+
+Panel variable: firm_id (unbalanced)
+ Time variable: year, 2012 to 2023, but with gaps
+         Delta: 1 unit
+
+. 
+. tempname R
+
+. postfile `R' str12 table str56 model str30 term double b se p lb ub N clusters df_a singletons using "$RESULTS/tables_3_to_5.dta", replace
+
+. 
+. * Table 3, column 1: firm and year fixed effects.
+. reghdfe mca_current alcohol_culture $CONTROLS if sample_current == 1, absorb(firm_id year) vce(cluster firm_id)
+(dropped 358 singleton observations)
+(MWFE estimator converged in 7 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,216
+Absorbing 2 HDFE groups                           F(  14,   4307) =       5.80
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8321
+                                                  Adj R-squared   =     0.8017
+                                                  Within R-sq.    =     0.0134
+Number of clusters (firm_id) =      4,308         Root MSE        =     2.6801
+
+                               (Std. err. adjusted for 4,308 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0347229   .0198208    -1.75   0.080     -.073582    .0041361
+           Size |   .5249694   .1140585     4.60   0.000     .3013559    .7485828
+            Lev |   1.372927   .3633241     3.78   0.000     .6606244    2.085229
+            ROA |   1.855136   .5201547     3.57   0.000     .8353645    2.874907
+         Growth |   .0862409   .0623903     1.38   0.167    -.0360762    .2085579
+       CashFlow |   .4244392    .378913     1.12   0.263    -.3184254    1.167304
+        FirmAge |  -.2377292   .7189133    -0.33   0.741    -1.647169    1.171711
+            SOE |   .3695206   .1990215     1.86   0.063    -.0206639    .7597051
+          Board |  -.3807573   .3400708    -1.12   0.263    -1.047471    .2859566
+          Indep |  -1.026186   .9237385    -1.11   0.267    -2.837189     .784817
+           Dual |   -.022919   .0861783    -0.27   0.790    -.1918728    .1460348
+           Top1 |  -.3995006   .6914935    -0.58   0.563    -1.755184    .9561827
+           Inst |   .5891827   .3487793     1.69   0.091    -.0946043     1.27297
+           Big4 |  -.0445538   .2761767    -0.16   0.872    -.5860023    .4968947
+          _cons |  -6.085187   3.133916    -1.94   0.052    -12.22928     .058902
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+     firm_id |      4308        4308           0    *|
+        year |        10           1           9     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0347229   .0198208    -1.75   0.080     -.073582    .0041361
+------------------------------------------------------------------------------
+
+. post `R' ("Table 3") ("Firm and year FE") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. ereturn list
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  7
+         e(sumweights) =  28216
+        e(r2_a_within) =  .0127917269990759
+               e(r2_a) =  .8016876729973523
+          e(r2_within) =  .013370032192683
+                 e(r2) =  .832121569007328
+               e(ll_0) =  -65692.0757953409
+                 e(ll) =  -65502.17907064029
+                  e(F) =  5.798945246259791
+               e(rmse) =  2.680051228965675
+                e(mss) =  850360.9619163001
+                e(rss) =  171558.182579294
+         e(tss_within) =  173883.0039397285
+                e(tss) =  1021919.144495594
+               e(df_m) =  14
+               e(df_r) =  4307
+               e(rank) =  14
+                  e(N) =  28216
+             e(N_full) =  28574
+     e(num_singletons) =  358
+    e(drop_singletons) =  1
+        e(df_a_nested) =  4308
+     e(df_a_redundant) =  4309
+       e(df_a_initial) =  4318
+               e(df_a) =  9
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  4308
+      e(N_clustervars) =  1
+            e(N_clust) =  4308
+
+macros:
+   e(extended_absvars) : "firm_id year"
+            e(absvars) : "firm_id year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 if sample_current == 1, absorb(firm_id year) vce(cluster firm_id)"
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 15
+                  e(V) :  15 x 15
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+. 
+. * Table 3, column 2 and the principal full-period result.
+. reghdfe mca_current alcohol_culture $CONTROLS if sample_current == 1, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  14,   4306) =       5.11
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8399
+                                                  Adj R-squared   =     0.8096
+                                                  Within R-sq.    =     0.0114
+Number of clusters (firm_id) =      4,307         Root MSE        =     2.6264
+
+                               (Std. err. adjusted for 4,307 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0338974   .0191629    -1.77   0.077    -.0714666    .0036717
+           Size |   .4823936   .1089911     4.43   0.000     .2687148    .6960723
+            Lev |   1.300093    .347449     3.74   0.000     .6189135    1.981272
+            ROA |   1.348063   .5080081     2.65   0.008     .3521059    2.344021
+         Growth |   .0962132    .063172     1.52   0.128    -.0276364    .2200628
+       CashFlow |    .422144   .3611966     1.17   0.243    -.2859874    1.130275
+        FirmAge |  -.2588177   .7059579    -0.37   0.714    -1.642859    1.125223
+            SOE |   .2958478   .1921589     1.54   0.124    -.0808826    .6725781
+          Board |   -.281282    .321054    -0.88   0.381    -.9107132    .3481491
+          Indep |   -.704954   .8768875    -0.80   0.421    -2.424105    1.014197
+           Dual |  -.0309391   .0851075    -0.36   0.716    -.1977936    .1359155
+           Top1 |  -.7337631   .6565847    -1.12   0.264    -2.021007    .5534811
+           Inst |   .5508357    .338255     1.63   0.103    -.1123183     1.21399
+           Big4 |   .0467015   .2540177     0.18   0.854     -.451304    .5447071
+          _cons |  -5.211059   3.109477    -1.68   0.094    -11.30723    .8851168
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307        4307           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0338974   .0191629    -1.77   0.077    -.0714666    .0036717
+------------------------------------------------------------------------------
+
+. post `R' ("Table 3") ("Firm and industry-year FE") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. gen byte esample_table3 = e(sample)
+
+. ereturn list
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  33
+         e(sumweights) =  28208
+        e(r2_a_within) =  .0108279616021549
+               e(r2_a) =  .8095788543470651
+          e(r2_within) =  .0114113964074116
+                 e(r2) =  .839856403829584
+               e(ll_0) =  -64982.63773431121
+                 e(ll) =  -64820.76604168248
+                  e(F) =  5.107850007699982
+               e(rmse) =  2.626414631326572
+                e(mss) =  858170.0251065088
+                e(rss) =  163635.6326147613
+         e(tss_within) =  165524.4982797697
+                e(tss) =  1021805.65772127
+               e(df_m) =  14
+               e(df_r) =  4306
+               e(rank) =  14
+                  e(N) =  28208
+             e(N_full) =  28574
+     e(num_singletons) =  366
+    e(drop_singletons) =  1
+        e(df_a_nested) =  4307
+     e(df_a_redundant) =  4308
+       e(df_a_initial) =  4473
+               e(df_a) =  165
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  4307
+      e(N_clustervars) =  1
+            e(N_clust) =  4307
+
+macros:
+   e(extended_absvars) : "firm_id industry_year"
+            e(absvars) : "firm_id industry_year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 if sample_current == 1, absorb(firm_id industry_year) vce(cluster firm_id)"
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 15
+                  e(V) :  15 x 15
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+. 
+. * Table 4: first-round common-sample sequential controls.
+. * This archived comparison excludes 2019 and requires nonfinancial/non-ST status,
+. * an available POI source, and complete city, regulation, trust, and commercial
+. * POI controls.  Keeping this historical sample definition reproduces the table
+. * reported in the manuscript rather than silently changing its composition.
+. foreach v in ln_total_poi_5km ln_restaurant_poi_5km ln_entertain_poi_5km {
+  2.     quietly summarize `v' if sample_current == 1 & year != 2019, detail
+  3.     replace `v' = r(p1) if `v' < r(p1) & !missing(`v')
+  4.     replace `v' = r(p99) if `v' > r(p99) & !missing(`v')
+  5. }
+(0 real changes made)
+(484 real changes made)
+(0 real changes made)
+(457 real changes made)
+(0 real changes made)
+(456 real changes made)
+
+. egen byte missing_common = rowmiss(ln_city_gdp ln_pc_gdp gdp_growth env_reg ln_night_light trust1 trust2 ln_total_poi_5km ln_restaurant_poi_5km ln_entertain_poi_5km)
+
+. gen byte sample_table4 = sample_current == 1 & year != 2019 & is_finance != 1 & is_stpt != 1 & poi_source_available == 1 & missing_common == 0
+
+. 
+. reghdfe mca_current alcohol_culture $CONTROLS if sample_table4, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 358 singleton observations)
+(MWFE estimator converged in 36 iterations)
+
+HDFE Linear regression                            Number of obs   =     20,476
+Absorbing 2 HDFE groups                           F(  14,   3769) =       4.80
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8648
+                                                  Adj R-squared   =     0.8326
+                                                  Within R-sq.    =     0.0120
+Number of clusters (firm_id) =      3,770         Root MSE        =     2.5034
+
+                               (Std. err. adjusted for 3,770 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0579048   .0257616    -2.25   0.025    -.1084128   -.0073967
+           Size |   .4773197   .1220481     3.91   0.000      .238033    .7166065
+            Lev |    1.25636   .3763905     3.34   0.001     .5184109    1.994309
+            ROA |   1.083051   .5419385     2.00   0.046     .0205297    2.145572
+         Growth |   .1745814   .0764947     2.28   0.023     .0246064    .3245565
+       CashFlow |   .8359121   .3850086     2.17   0.030     .0810668    1.590757
+        FirmAge |   .3286948   .8168986     0.40   0.687    -1.272911    1.930301
+            SOE |   .2731545   .2313979     1.18   0.238    -.1805227    .7268318
+          Board |  -.1571586   .3712838    -0.42   0.672    -.8850952    .5707781
+          Indep |  -.2227308   .9865798    -0.23   0.821    -2.157013    1.711551
+           Dual |  -.0520696   .0954738    -0.55   0.586    -.2392548    .1351156
+           Top1 |  -.5715797   .7867005    -0.73   0.468     -2.11398    .9708203
+           Inst |   .3817998   .3894857     0.98   0.327    -.3818233    1.145423
+           Big4 |  -.0649976   .2797453    -0.23   0.816    -.6134644    .4834691
+          _cons |  -7.127978   3.520252    -2.02   0.043    -14.02976   -.2261935
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3770        3770           0    *|
+ industry_year |       149           1         148     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0579048   .0257616    -2.25   0.025    -.1084128   -.0073967
+------------------------------------------------------------------------------
+
+. post `R' ("Table 4") ("Common-sample baseline") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. 
+. reghdfe mca_current alcohol_culture $CONTROLS ln_city_gdp ln_pc_gdp gdp_growth env_reg ln_night_light if sample_table4, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 358 singleton observations)
+(MWFE estimator converged in 36 iterations)
+
+HDFE Linear regression                            Number of obs   =     20,476
+Absorbing 2 HDFE groups                           F(  19,   3769) =       3.74
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8649
+                                                  Adj R-squared   =     0.8328
+                                                  Within R-sq.    =     0.0132
+Number of clusters (firm_id) =      3,770         Root MSE        =     2.5022
+
+                               (Std. err. adjusted for 3,770 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0577386   .0255845    -2.26   0.024    -.1078994   -.0075779
+           Size |   .4706374   .1207873     3.90   0.000     .2338226    .7074522
+            Lev |   1.282743    .379974     3.38   0.001     .5377686    2.027718
+            ROA |    1.11713   .5406447     2.07   0.039     .0571458    2.177115
+         Growth |   .1713692   .0758428     2.26   0.024     .0226723    .3200662
+       CashFlow |   .8573957    .383818     2.23   0.026     .1048846    1.609907
+        FirmAge |   .2655166   .8176211     0.32   0.745    -1.337506    1.868539
+            SOE |   .3071304   .2331628     1.32   0.188    -.1500071     .764268
+          Board |  -.1504073   .3693674    -0.41   0.684    -.8745865     .573772
+          Indep |  -.2613631   .9850192    -0.27   0.791    -2.192585    1.669859
+           Dual |  -.0502301   .0952785    -0.53   0.598    -.2370325    .1365723
+           Top1 |  -.5846772   .7837467    -0.75   0.456    -2.121286    .9519316
+           Inst |   .4012959   .3891628     1.03   0.303    -.3616943    1.164286
+           Big4 |   -.071864   .2802862    -0.26   0.798    -.6213913    .4776633
+    ln_city_gdp |   -.636642   .4830455    -1.32   0.188    -1.583698    .3104138
+      ln_pc_gdp |   .8739688   .5373943     1.63   0.104     -.179643    1.927581
+     gdp_growth |  -.0091329   .0165067    -0.55   0.580    -.0414959    .0232301
+        env_reg |  -6.864549   18.72721    -0.37   0.714      -43.581    29.85191
+ ln_night_light |     .62151   .4788204     1.30   0.194    -.3172622    1.560282
+          _cons |  -11.72918   6.149146    -1.91   0.057    -23.78515    .3268008
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3770        3770           0    *|
+ industry_year |       149           1         148     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0577386   .0255845    -2.26   0.024    -.1078994   -.0075779
+------------------------------------------------------------------------------
+
+. post `R' ("Table 4") ("Add city controls") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. 
+. reghdfe mca_current alcohol_culture $CONTROLS ln_city_gdp ln_pc_gdp gdp_growth env_reg ln_night_light trust1 trust2 if sample_table4, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 358 singleton observations)
+(MWFE estimator converged in 36 iterations)
+
+HDFE Linear regression                            Number of obs   =     20,476
+Absorbing 2 HDFE groups                           F(  21,   3769) =       3.63
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8651
+                                                  Adj R-squared   =     0.8330
+                                                  Within R-sq.    =     0.0147
+Number of clusters (firm_id) =      3,770         Root MSE        =     2.5005
+
+                               (Std. err. adjusted for 3,770 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0573989   .0255969    -2.24   0.025     -.107584   -.0072139
+           Size |   .4738928   .1203239     3.94   0.000     .2379866     .709799
+            Lev |   1.213779   .3739788     3.25   0.001     .4805586    1.946999
+            ROA |   1.155636   .5400602     2.14   0.032     .0967975    2.214475
+         Growth |   .1740266   .0757658     2.30   0.022     .0254807    .3225725
+       CashFlow |   .8905256   .3833394     2.32   0.020     .1389528    1.642098
+        FirmAge |   .2269649   .8158481     0.28   0.781    -1.372582    1.826511
+            SOE |   .2671449   .2347143     1.14   0.255    -.1930344    .7273243
+          Board |  -.1842647    .368197    -0.50   0.617    -.9061493    .5376199
+          Indep |  -.3177101   .9839575    -0.32   0.747    -2.246851    1.611431
+           Dual |  -.0416268   .0955829    -0.44   0.663     -.229026    .1457724
+           Top1 |  -.5714174   .7827328    -0.73   0.465    -2.106038    .9632034
+           Inst |   .3763235    .387618     0.97   0.332    -.3836379    1.136285
+           Big4 |   -.060354   .2796188    -0.22   0.829    -.6085729    .4878649
+    ln_city_gdp |  -.4632522   .4553989    -1.02   0.309    -1.356104    .4295999
+      ln_pc_gdp |   .9703275   .5384012     1.80   0.072    -.0852585    2.025913
+     gdp_growth |  -.0120101   .0163896    -0.73   0.464    -.0441436    .0201233
+        env_reg |  -.6247419    18.9375    -0.03   0.974    -37.75348    36.50399
+ ln_night_light |   1.422524   .5634255     2.52   0.012     .3178755    2.527172
+         trust1 |  -3.820069   16.76105    -0.23   0.820    -36.68168    29.04154
+         trust2 |   2.981829   17.71957     0.17   0.866    -31.75905    37.72271
+          _cons |  -12.01186   6.997963    -1.72   0.086    -25.73202    1.708304
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3770        3770           0    *|
+ industry_year |       149           1         148     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0573989   .0255969    -2.24   0.025     -.107584   -.0072139
+------------------------------------------------------------------------------
+
+. post `R' ("Table 4") ("Add trust controls") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. 
+. reghdfe mca_current alcohol_culture $CONTROLS ln_city_gdp ln_pc_gdp gdp_growth env_reg ln_night_light trust1 trust2 ln_total_poi_5km ln_restaurant_poi_5km ln_entertain_poi_5km if sample_table4, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 358 singleton observations)
+(MWFE estimator converged in 36 iterations)
+
+HDFE Linear regression                            Number of obs   =     20,476
+Absorbing 2 HDFE groups                           F(  24,   3769) =       3.31
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8651
+                                                  Adj R-squared   =     0.8330
+                                                  Within R-sq.    =     0.0147
+Number of clusters (firm_id) =      3,770         Root MSE        =     2.5007
+
+                                     (Std. err. adjusted for 3,770 clusters in firm_id)
+---------------------------------------------------------------------------------------
+                      |               Robust
+          mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+      alcohol_culture |  -.0640703   .0270569    -2.37   0.018    -.1171179   -.0110227
+                 Size |   .4735381   .1188753     3.98   0.000      .240472    .7066043
+                  Lev |    1.21113   .3737481     3.24   0.001     .4783622    1.943899
+                  ROA |   1.149452   .5411818     2.12   0.034     .0884149     2.21049
+               Growth |   .1742053   .0759071     2.29   0.022     .0253824    .3230283
+             CashFlow |    .891886   .3832819     2.33   0.020     .1404259    1.643346
+              FirmAge |   .2172134   .8171006     0.27   0.790    -1.384789    1.819216
+                  SOE |   .2657345   .2344599     1.13   0.257     -.193946     .725415
+                Board |  -.1818965   .3683319    -0.49   0.621    -.9040458    .5402527
+                Indep |  -.3148787   .9813714    -0.32   0.748    -2.238949    1.609192
+                 Dual |  -.0416417   .0956768    -0.44   0.663    -.2292251    .1459417
+                 Top1 |  -.5711161   .7826451    -0.73   0.466    -2.105565    .9633328
+                 Inst |   .3758565   .3867845     0.97   0.331    -.3824706    1.134184
+                 Big4 |  -.0616506   .2792318    -0.22   0.825    -.6091106    .4858094
+          ln_city_gdp |  -.4729915   .4652175    -1.02   0.309    -1.385094    .4391109
+            ln_pc_gdp |   .9749398   .5369747     1.82   0.070    -.0778493    2.027729
+           gdp_growth |  -.0116183   .0164814    -0.70   0.481    -.0439317    .0206951
+              env_reg |   -1.03525   18.95228    -0.05   0.956    -38.19296    36.12246
+       ln_night_light |   1.409678   .5638816     2.50   0.012     .3041355    2.515221
+               trust1 |   -3.80092   16.83952    -0.23   0.821    -36.81637    29.21453
+               trust2 |   2.970865   17.80744     0.17   0.868    -31.94229    37.88401
+     ln_total_poi_5km |  -.0417802   .1171941    -0.36   0.721    -.2715502    .1879898
+ln_restaurant_poi_5km |   .0103159   .1381815     0.07   0.940    -.2606018    .2812337
+ ln_entertain_poi_5km |   .0514131   .1287883     0.40   0.690    -.2010884    .3039146
+                _cons |  -11.93102   7.013929    -1.70   0.089    -25.68249    1.820443
+---------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3770        3770           0    *|
+ industry_year |       149           1         148     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0640703   .0270569    -2.37   0.018    -.1171179   -.0110227
+------------------------------------------------------------------------------
+
+. post `R' ("Table 4") ("Add POI controls") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. ereturn list
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  36
+         e(sumweights) =  20476
+        e(r2_a_within) =  .0132630662285008
+               e(r2_a) =  .8329799348651138
+          e(r2_within) =  .0146932924883461
+                 e(r2) =  .8651277285987689
+               e(ll_0) =  -45783.96792867126
+                 e(ll) =  -45632.42189840741
+                  e(F) =  3.310249513167024
+               e(rmse) =  2.500672355428622
+                e(mss) =  663206.9670424489
+                e(rss) =  103393.0910976743
+         e(tss_within) =  104934.9307270918
+                e(tss) =  766600.0581401233
+               e(df_m) =  24
+               e(df_r) =  3769
+               e(rank) =  24
+                  e(N) =  20476
+             e(N_full) =  20834
+     e(num_singletons) =  358
+    e(drop_singletons) =  1
+        e(df_a_nested) =  3770
+     e(df_a_redundant) =  3771
+       e(df_a_initial) =  3919
+               e(df_a) =  148
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  3770
+      e(N_clustervars) =  1
+            e(N_clust) =  3770
+
+macros:
+   e(extended_absvars) : "firm_id industry_year"
+            e(absvars) : "firm_id industry_year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 ln_city_gdp ln_pc_gdp gdp_growth env_reg ln_night_light trust1 trust2 ln_total_poi_5km ln_restaurant_poi_5km ln_entertain_poi_5km _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 ln_city_gdp ln_pc_gdp gdp_growth env_reg ln_night_light trust1 trust2 ln_total_poi_5km ln_restaurant_poi_5km ln_ente.."
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 25
+                  e(V) :  25 x 25
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+. 
+. * Table 5, Panel A: clustering.
+. foreach cl in firm_id city_id {
+  2.     reghdfe mca_current alcohol_culture $CONTROLS if sample_current == 1, absorb(firm_id industry_year) vce(cluster `cl')
+  3.     lincom alcohol_culture
+  4.     post `R' ("Table 5") ("Clustering: `cl'") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+  5. }
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  14,   4306) =       5.11
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8399
+                                                  Adj R-squared   =     0.8096
+                                                  Within R-sq.    =     0.0114
+Number of clusters (firm_id) =      4,307         Root MSE        =     2.6264
+
+                               (Std. err. adjusted for 4,307 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0338974   .0191629    -1.77   0.077    -.0714666    .0036717
+           Size |   .4823936   .1089911     4.43   0.000     .2687148    .6960723
+            Lev |   1.300093    .347449     3.74   0.000     .6189135    1.981272
+            ROA |   1.348063   .5080081     2.65   0.008     .3521059    2.344021
+         Growth |   .0962132    .063172     1.52   0.128    -.0276364    .2200628
+       CashFlow |    .422144   .3611966     1.17   0.243    -.2859874    1.130275
+        FirmAge |  -.2588177   .7059579    -0.37   0.714    -1.642859    1.125223
+            SOE |   .2958478   .1921589     1.54   0.124    -.0808826    .6725781
+          Board |   -.281282    .321054    -0.88   0.381    -.9107132    .3481491
+          Indep |   -.704954   .8768875    -0.80   0.421    -2.424105    1.014197
+           Dual |  -.0309391   .0851075    -0.36   0.716    -.1977936    .1359155
+           Top1 |  -.7337631   .6565847    -1.12   0.264    -2.021007    .5534811
+           Inst |   .5508357    .338255     1.63   0.103    -.1123183     1.21399
+           Big4 |   .0467015   .2540177     0.18   0.854     -.451304    .5447071
+          _cons |  -5.211059   3.109477    -1.68   0.094    -11.30723    .8851168
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307        4307           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0338974   .0191629    -1.77   0.077    -.0714666    .0036717
+------------------------------------------------------------------------------
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  14,    402) =       5.83
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8399
+                                                  Adj R-squared   =     0.8096
+                                                  Within R-sq.    =     0.0114
+Number of clusters (city_id) =        403         Root MSE        =     2.6264
+
+                                 (Std. err. adjusted for 403 clusters in city_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0338974   .0179558    -1.89   0.060    -.0691964    .0014015
+           Size |   .4823936   .1185132     4.07   0.000     .2494106    .7153766
+            Lev |   1.300093   .3295717     3.94   0.000     .6521933    1.947992
+            ROA |   1.348063   .4960237     2.72   0.007     .3729391    2.323188
+         Growth |   .0962132    .065762     1.46   0.144    -.0330671    .2254936
+       CashFlow |    .422144   .3719176     1.14   0.257    -.3090023     1.15329
+        FirmAge |  -.2588177   .8289382    -0.31   0.755    -1.888413    1.370777
+            SOE |   .2958478   .1822654     1.62   0.105    -.0624646    .6541601
+          Board |   -.281282   .2885408    -0.97   0.330    -.8485193    .2859553
+          Indep |   -.704954   .8891615    -0.79   0.428    -2.452941    1.043033
+           Dual |  -.0309391   .0958454    -0.32   0.747    -.2193599    .1574818
+           Top1 |  -.7337631   .7897987    -0.93   0.353    -2.286415    .8188884
+           Inst |   .5508357   .3198592     1.72   0.086    -.0779699    1.179641
+           Big4 |   .0467015   .2156404     0.22   0.829    -.3772223    .4706254
+          _cons |  -5.211059   3.280318    -1.59   0.113    -11.65978    1.237662
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307           0        4307     |
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0338974   .0179558    -1.89   0.060    -.0691964    .0014015
+------------------------------------------------------------------------------
+
+. reghdfe mca_current alcohol_culture $CONTROLS if sample_current == 1, absorb(firm_id industry_year) vce(cluster firm_id city_id)
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+Warning: VCV matrix was non-positive semi-definite; adjustment from Cameron, Gelbach & Miller applied.
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  14,    402) =       5.91
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8399
+                                                  Adj R-squared   =     0.8096
+Number of clusters (firm_id) =      4,307         Within R-sq.    =     0.0114
+Number of clusters (city_id) =        403         Root MSE        =     2.6264
+
+                         (Std. err. adjusted for 403 clusters in firm_id city_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0338974   .0168194    -2.02   0.045    -.0669623   -.0008325
+           Size |   .4823936   .1150122     4.19   0.000     .2562931    .7084941
+            Lev |   1.300093   .3196203     4.07   0.000     .6717567    1.928429
+            ROA |   1.348063   .4755358     2.83   0.005     .4132159    2.282911
+         Growth |   .0962132   .0634319     1.52   0.130    -.0284864    .2209129
+       CashFlow |    .422144   .3470922     1.22   0.225    -.2601985    1.104487
+        FirmAge |  -.2588177   .7699902    -0.34   0.737    -1.772528    1.254893
+            SOE |   .2958478   .1730193     1.71   0.088    -.0442879    .6359834
+          Board |   -.281282   .2709867    -1.04   0.300    -.8140102    .2514461
+          Indep |   -.704954   .8227771    -0.86   0.392    -2.322437    .9125293
+           Dual |  -.0309391   .0897904    -0.34   0.731    -.2074564    .1455782
+           Top1 |  -.7337631   .7401359    -0.99   0.322    -2.188783    .7212572
+           Inst |   .5508357   .3075581     1.79   0.074    -.0537874    1.155459
+           Big4 |   .0467015   .2129302     0.22   0.827    -.3718943    .4652973
+          _cons |  -5.211059   3.144131    -1.66   0.098    -11.39205    .9699346
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307        4307           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0338974   .0168194    -2.02   0.045    -.0669623   -.0008325
+------------------------------------------------------------------------------
+
+. post `R' ("Table 5") ("Two-way firm-city clustering") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (.) (e(df_a)) (e(num_singletons))
+
+. 
+. * Table 5, Panel B: outcome forms.
+. gen double ln_mca = ln(1 + mca_current)
+(2,717 missing values generated)
+
+. quietly summarize mca_current if sample_current == 1
+
+. gen double z_mca = (mca_current - r(mean)) / r(sd) if !missing(mca_current)
+(2,717 missing values generated)
+
+. gen byte climate_any = mca_current_original > 0 if !missing(mca_current_original)
+(2,717 missing values generated)
+
+. 
+. foreach y in ln_mca z_mca climate_any {
+  2.     reghdfe `y' alcohol_culture $CONTROLS if sample_current == 1, absorb(firm_id industry_year) vce(cluster firm_id)
+  3.     lincom alcohol_culture
+  4.     post `R' ("Table 5") ("Outcome: `y'") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+  5. }
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  14,   4306) =       3.57
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8341
+                                                  Adj R-squared   =     0.8027
+                                                  Within R-sq.    =     0.0067
+Number of clusters (firm_id) =      4,307         Root MSE        =     0.3963
+
+                               (Std. err. adjusted for 4,307 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+         ln_mca | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |   -.006911   .0028008    -2.47   0.014     -.012402   -.0014199
+           Size |   .0527817   .0151059     3.49   0.000     .0231663    .0823971
+            Lev |   .1509748   .0511287     2.95   0.003     .0507362    .2512134
+            ROA |   .1469641   .0786855     1.87   0.062    -.0073001    .3012283
+         Growth |   .0036771   .0086931     0.42   0.672    -.0133659      .02072
+       CashFlow |   -.003245   .0599268    -0.05   0.957    -.1207323    .1142423
+        FirmAge |  -.1222345   .1051553    -1.16   0.245    -.3283931    .0839241
+            SOE |   .0455645   .0281158     1.62   0.105    -.0095569    .1006859
+          Board |  -.0195121   .0489848    -0.40   0.690    -.1155476    .0765233
+          Indep |  -.0075441   .1325439    -0.06   0.955    -.2673985    .2523103
+           Dual |   .0027601    .012639     0.22   0.827    -.0220189    .0275391
+           Top1 |  -.0277841   .0948628    -0.29   0.770    -.2137642    .1581959
+           Inst |   .0975213   .0530169     1.84   0.066    -.0064192    .2014618
+           Big4 |   -.032303   .0353707    -0.91   0.361    -.1016478    .0370418
+          _cons |   .4132374   .4471896     0.92   0.355    -.4634846    1.289959
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307        4307           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+      ln_mca | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   -.006911   .0028008    -2.47   0.014     -.012402   -.0014199
+------------------------------------------------------------------------------
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  14,   4306) =       5.11
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8399
+                                                  Adj R-squared   =     0.8096
+                                                  Within R-sq.    =     0.0114
+Number of clusters (firm_id) =      4,307         Root MSE        =     0.4365
+
+                               (Std. err. adjusted for 4,307 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+          z_mca | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0056331   .0031845    -1.77   0.077    -.0118763    .0006102
+           Size |   .0801644   .0181122     4.43   0.000     .0446552    .1156736
+            Lev |     .21605   .0577392     3.74   0.000     .1028513    .3292487
+            ROA |   .2240218    .084421     2.65   0.008     .0585131    .3895305
+         Growth |   .0159888   .0104979     1.52   0.128    -.0045926    .0365701
+       CashFlow |   .0701521   .0600238     1.17   0.243    -.0475255    .1878297
+        FirmAge |  -.0430105   .1173164    -0.37   0.714     -.273011    .1869901
+            SOE |   .0491641    .031933     1.54   0.124    -.0134411    .1117693
+          Board |  -.0467436   .0533529    -0.88   0.381    -.1513427    .0578556
+          Indep |  -.1171496   .1457216    -0.80   0.421    -.4028389    .1685397
+           Dual |  -.0051415   .0141432    -0.36   0.716    -.0328694    .0225865
+           Top1 |  -.1219371   .1091116    -1.12   0.264    -.3358519    .0919777
+           Inst |   .0915381   .0562114     1.63   0.103    -.0186651    .2017414
+           Big4 |   .0077609   .0422128     0.18   0.854    -.0749979    .0905197
+          _cons |  -1.614629   .5167343    -3.12   0.002    -2.627694   -.6015639
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307        4307           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+       z_mca | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0056331   .0031845    -1.77   0.077    -.0118763    .0006102
+------------------------------------------------------------------------------
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  14,   4306) =       2.89
+Statistics robust to heteroskedasticity           Prob > F        =     0.0002
+                                                  R-squared       =     0.3205
+                                                  Adj R-squared   =     0.1920
+                                                  Within R-sq.    =     0.0034
+Number of clusters (firm_id) =      4,307         Root MSE        =     0.2017
+
+                               (Std. err. adjusted for 4,307 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    climate_any | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |   .0006313   .0011573     0.55   0.585    -.0016375    .0029001
+           Size |  -.0076846   .0051829    -1.48   0.138    -.0178458    .0024765
+            Lev |  -.0121565   .0201336    -0.60   0.546    -.0516287    .0273156
+            ROA |   .0168144   .0348046     0.48   0.629    -.0514205    .0850493
+         Growth |  -.0061029   .0041606    -1.47   0.142    -.0142598     .002054
+       CashFlow |  -.0225457   .0283931    -0.79   0.427    -.0782108    .0331195
+        FirmAge |   -.179908   .0438741    -4.10   0.000    -.2659238   -.0938922
+            SOE |  -.0234687   .0116832    -2.01   0.045    -.0463737   -.0005637
+          Board |   .0037783   .0192528     0.20   0.844     -.033967    .0415237
+          Indep |   .0263872   .0565143     0.47   0.641    -.0844099    .1371844
+           Dual |   -.002216    .005245    -0.42   0.673    -.0124988    .0080669
+           Top1 |    .080778   .0344303     2.35   0.019     .0132768    .1482791
+           Inst |   .0205065   .0209281     0.98   0.327    -.0205233    .0615363
+           Big4 |  -.0037285   .0144587    -0.26   0.797     -.032075     .024618
+          _cons |   1.616172   .1746276     9.25   0.000     1.273812    1.958532
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307        4307           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ climate_any | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0006313   .0011573     0.55   0.585    -.0016375    .0029001
+------------------------------------------------------------------------------
+
+. reghdfe ln_mca alcohol_culture $CONTROLS if sample_current == 1 & year != 2023, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 520 singleton observations)
+(MWFE estimator converged in 32 iterations)
+
+HDFE Linear regression                            Number of obs   =     23,707
+Absorbing 2 HDFE groups                           F(  14,   3814) =       2.58
+Statistics robust to heteroskedasticity           Prob > F        =     0.0011
+                                                  R-squared       =     0.8256
+                                                  Adj R-squared   =     0.7904
+                                                  Within R-sq.    =     0.0054
+Number of clusters (firm_id) =      3,815         Root MSE        =     0.4031
+
+                               (Std. err. adjusted for 3,815 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+         ln_mca | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0033752    .004584    -0.74   0.462    -.0123626    .0056122
+           Size |   .0511749   .0160414     3.19   0.001     .0197242    .0826255
+            Lev |   .1110193   .0525526     2.11   0.035     .0079855    .2140531
+            ROA |   .1632894   .0825422     1.98   0.048     .0014583    .3251205
+         Growth |   .0052864   .0092412     0.57   0.567    -.0128317    .0234045
+       CashFlow |  -1.76e-06    .066002    -0.00   1.000    -.1294044    .1294009
+        FirmAge |  -.2003466   .1115039    -1.80   0.072    -.4189596    .0182663
+            SOE |   .0450909   .0289898     1.56   0.120    -.0117462     .101928
+          Board |  -.0281086   .0520165    -0.54   0.589    -.1300914    .0738743
+          Indep |   .0455921   .1414012     0.32   0.747    -.2316371    .3228214
+           Dual |   .0004298   .0134061     0.03   0.974    -.0258541    .0267137
+           Top1 |  -.0113002   .0972366    -0.12   0.907    -.2019409    .1793406
+           Inst |   .0876088   .0545489     1.61   0.108    -.0193389    .1945565
+           Big4 |  -.0407942   .0356821    -1.14   0.253     -.110752    .0291636
+          _cons |   .6303529   .4694306     1.34   0.179    -.2900063    1.550712
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3815        3815           0    *|
+ industry_year |       149           1         148     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+      ln_mca | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0033752    .004584    -0.74   0.462    -.0123626    .0056122
+------------------------------------------------------------------------------
+
+. post `R' ("Table 5") ("lnMCA excluding 2023") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. 
+. capture noisily clogit climate_any alcohol_culture $CONTROLS i.year if sample_current == 1, group(firm_id) vce(cluster firm_id)
+note: multiple positive outcomes within groups encountered.
+note: 3,792 groups (21,339 obs) omitted because of all positive or
+      all negative outcomes.
+
+Iteration 0:  Log pseudolikelihood = -1832.7549  
+Iteration 1:  Log pseudolikelihood = -1784.9804  
+Iteration 2:  Log pseudolikelihood = -1784.2425  
+Iteration 3:  Log pseudolikelihood = -1784.2414  
+Iteration 4:  Log pseudolikelihood = -1784.2414  
+
+Conditional (fixed-effects) logistic regression         Number of obs =  7,235
+                                                        Wald chi2(23) = 560.35
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -1784.2414                       Pseudo R2     = 0.2647
+
+                                 (Std. err. adjusted for 874 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    climate_any | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |   .0247699   .0452369     0.55   0.584    -.0638927    .1134326
+           Size |  -.0026514   .1219102    -0.02   0.983     -.241591    .2362882
+            Lev |   .1145014   .4619977     0.25   0.804    -.7909975        1.02
+            ROA |   .5784638   .8637541     0.67   0.503    -1.114463    2.271391
+         Growth |  -.1372618   .0992355    -1.38   0.167    -.3317597    .0572362
+       CashFlow |  -.1719127   .6432292    -0.27   0.789    -1.432619    1.088793
+        FirmAge |  -5.589697   1.159438    -4.82   0.000    -7.862154    -3.31724
+            SOE |  -.1601926   .3145957    -0.51   0.611    -.7767889    .4564036
+          Board |   .3625091   .4715983     0.77   0.442    -.5618067    1.286825
+          Indep |    1.64324   1.428315     1.15   0.250    -1.156206    4.442686
+           Dual |  -.0160433   .1397415    -0.11   0.909    -.2899316     .257845
+           Top1 |   1.215748   .7342953     1.66   0.098    -.2234441    2.654941
+           Inst |   .6103419   .5063695     1.21   0.228    -.3821241    1.602808
+           Big4 |  -.5354779   .3300902    -1.62   0.105    -1.182443     .111487
+                |
+           year |
+          2013  |   .6001757   .1145106     5.24   0.000      .375739    .8246124
+          2015  |   2.241974   .2354786     9.52   0.000     1.780445    2.703504
+          2016  |    2.88431   .2926089     9.86   0.000     2.310807    3.457813
+          2017  |   3.600869   .3680834     9.78   0.000     2.879439    4.322299
+          2018  |   3.925436   .4358736     9.01   0.000     3.071139    4.779733
+          2020  |   4.751501   .5171634     9.19   0.000     3.737879    5.765123
+          2021  |   6.417381   .6007724    10.68   0.000     5.239889    7.594873
+          2022  |   6.732788    .679091     9.91   0.000     5.401794    8.063781
+          2023  |   6.895445   .7236792     9.53   0.000      5.47706     8.31383
+---------------------------------------------------------------------------------
+
+. if !_rc {
+.     lincom alcohol_culture
+
+ ( 1)  [climate_any]alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ climate_any | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0247699   .0452369     0.55   0.584    -.0638927    .1134326
+------------------------------------------------------------------------------
+.     post `R' ("Table 5") ("ClimateAny conditional logit") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (.) (.)
+.     ereturn list
+
+scalars:
+            e(N_clust) =  874
+                  e(p) =  9.1397921483e-104
+               e(chi2) =  560.3481643407893
+               e(ll_0) =  -2426.418421123909
+       e(N_group_drop) =  3792
+             e(N_drop) =  21339
+               e(df_m) =  23
+         e(k_eq_model) =  1
+                 e(ll) =  -1784.241442199197
+                 e(rc) =  0
+          e(converged) =  1
+               e(k_dv) =  1
+               e(k_eq) =  1
+                  e(k) =  24
+                 e(ic) =  4
+                  e(N) =  7235
+               e(rank) =  23
+               e(r2_p) =  .2646604449315291
+
+macros:
+            e(cmdline) : "clogit climate_any alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 i.year if sample_current == 1, group(firm_id) vce(cluster firm_id)"
+                e(cmd) : "clogit"
+            e(predict) : "clogit_p"
+       e(marginsnotok) : "default Pc1 STDP DBeta DX2 GDBeta GDX2 Hat Residuals RSTAndard SCore"
+          e(marginsok) : "PU0 XB"
+     e(marginsdefault) : "predict(pu0)"
+          e(ml_method) : "e2"
+                e(vce) : "cluster"
+           e(clustvar) : "firm_id"
+            e(vcetype) : "Robust"
+           e(multiple) : "multiple"
+              e(group) : "firm_id"
+           e(chi2type) : "Wald"
+                e(opt) : "moptimize"
+              e(title) : "Conditional (fixed-effects) logistic regression"
+               e(user) : "clogit_lf"
+          e(technique) : "nr"
+              e(which) : "max"
+             e(depvar) : "climate_any"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 24
+                  e(V) :  24 x 24
+                e(Cns) :  1 x 25
+       e(V_modelbased) :  24 x 24
+               e(ilog) :  1 x 20
+           e(gradient) :  1 x 24
+
+functions:
+             e(sample)   
+. }
+
+. 
+. * Table 5, Panel C: period, fixed-effect, lag, and high-zero checks.
+. reghdfe mca_current alcohol_culture $CONTROLS if sample_current == 1 & year != 2023, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 520 singleton observations)
+(MWFE estimator converged in 32 iterations)
+
+HDFE Linear regression                            Number of obs   =     23,707
+Absorbing 2 HDFE groups                           F(  14,   3814) =       4.53
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8319
+                                                  Adj R-squared   =     0.7981
+                                                  Within R-sq.    =     0.0106
+Number of clusters (firm_id) =      3,815         Root MSE        =     2.6049
+
+                               (Std. err. adjusted for 3,815 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0077318   .0301785    -0.26   0.798    -.0668993    .0514357
+           Size |   .4764084   .1116644     4.27   0.000     .2574807     .695336
+            Lev |   1.099042   .3418918     3.21   0.001     .4287334     1.76935
+            ROA |   1.504381   .5203752     2.89   0.004      .484141    2.524622
+         Growth |   .0955694   .0614732     1.55   0.120    -.0249542     .216093
+       CashFlow |   .4068415   .3917459     1.04   0.299      -.36121    1.174893
+        FirmAge |  -.5165248   .7162543    -0.72   0.471    -1.920803    .8877536
+            SOE |   .2989984   .1936275     1.54   0.123    -.0806251    .6786218
+          Board |  -.4615368    .322599    -1.43   0.153     -1.09402    .1709463
+          Indep |   -.721702   .8901104    -0.81   0.418     -2.46684    1.023436
+           Dual |   -.065404    .085519    -0.76   0.444    -.2330713    .1022633
+           Top1 |  -.7340858   .6597443    -1.11   0.266    -2.027571    .5593997
+           Inst |   .5706624   .3428846     1.66   0.096    -.1015925    1.242917
+           Big4 |  -.0960487   .2277365    -0.42   0.673    -.5425457    .3504483
+          _cons |  -4.220062   3.139924    -1.34   0.179    -10.37615    1.936029
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3815        3815           0    *|
+ industry_year |       149           1         148     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0077318   .0301785    -0.26   0.798    -.0668993    .0514357
+------------------------------------------------------------------------------
+
+. post `R' ("Table 5") ("MCA excluding 2023") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. gen byte esample_no2023 = e(sample)
+
+. ereturn list
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  32
+         e(sumweights) =  23707
+        e(r2_a_within) =  .0098821879011309
+               e(r2_a) =  .7980729886490777
+          e(r2_within) =  .0105842568521735
+                 e(r2) =  .8319404398062222
+               e(ll_0) =  -54285.04834437338
+                 e(ll) =  -54158.91918028404
+                  e(F) =  4.530539067599356
+               e(rmse) =  2.604884148252767
+                e(mss) =  662724.3438330893
+                e(rss) =  133876.3647313998
+         e(tss_within) =  135308.504699422
+                e(tss) =  796600.7085644891
+               e(df_m) =  14
+               e(df_r) =  3814
+               e(rank) =  14
+                  e(N) =  23707
+             e(N_full) =  24227
+     e(num_singletons) =  520
+    e(drop_singletons) =  1
+        e(df_a_nested) =  3815
+     e(df_a_redundant) =  3816
+       e(df_a_initial) =  3964
+               e(df_a) =  148
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  3815
+      e(N_clustervars) =  1
+            e(N_clust) =  3815
+
+macros:
+   e(extended_absvars) : "firm_id industry_year"
+            e(absvars) : "firm_id industry_year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 if sample_current == 1 & year != 2023, absorb(firm_id industry_year) vce(cluster firm_id)"
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 15
+                  e(V) :  15 x 15
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+. 
+. reghdfe mca_current alcohol_culture $CONTROLS if sample_current == 1, absorb(firm_id city_year) vce(cluster firm_id)
+(dropped 1691 singleton observations)
+(MWFE estimator converged in 177 iterations)
+
+HDFE Linear regression                            Number of obs   =     26,883
+Absorbing 2 HDFE groups                           F(  14,   4175) =       5.64
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8591
+                                                  Adj R-squared   =     0.8162
+                                                  Within R-sq.    =     0.0122
+Number of clusters (firm_id) =      4,176         Root MSE        =     2.5808
+
+                               (Std. err. adjusted for 4,176 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0230207   .0326258    -0.71   0.480    -.0869846    .0409432
+           Size |    .488805   .1067137     4.58   0.000     .2795893    .6980207
+            Lev |   1.453408   .3522539     4.13   0.000     .7628027    2.144013
+            ROA |   1.615998   .4813794     3.36   0.001     .6722379    2.559758
+         Growth |   .0455049   .0593061     0.77   0.443    -.0707666    .1617764
+       CashFlow |   .3676875   .3889067     0.95   0.344    -.3947768    1.130152
+        FirmAge |  -.1292264   .7470556    -0.17   0.863    -1.593853      1.3354
+            SOE |   .3731503   .2086961     1.79   0.074    -.0360052    .7823059
+          Board |  -.3606257   .3368864    -1.07   0.284    -1.021102     .299851
+          Indep |  -.8475631   .9387667    -0.90   0.367    -2.688046    .9929195
+           Dual |  -.0119165   .0862357    -0.14   0.890    -.1809843    .1571514
+           Top1 |  -.3251107   .7117188    -0.46   0.648    -1.720458    1.070237
+           Inst |   .5430622   .3406956     1.59   0.111    -.1248827    1.211007
+           Big4 |  -.1703182    .266256    -0.64   0.522    -.6923217    .3516852
+          _cons |  -5.801775   2.999457    -1.93   0.053    -11.68231    .0787567
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+     firm_id |      4176        4176           0    *|
+   city_year |      2091           1        2090     |
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0230207   .0326258    -0.71   0.480    -.0869846    .0409432
+------------------------------------------------------------------------------
+
+. post `R' ("Table 5") ("City-year FE") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. 
+. gen double lag_alcohol = L.alcohol_culture
+(8,967 missing values generated)
+
+. replace lag_alcohol = . if year - L.year != 1
+(0 real changes made)
+
+. reghdfe mca_current lag_alcohol $CONTROLS if sample_current == 1, absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 370 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     23,991
+Absorbing 2 HDFE groups                           F(  14,   4291) =       4.50
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8607
+                                                  Adj R-squared   =     0.8291
+                                                  Within R-sq.    =     0.0117
+Number of clusters (firm_id) =      4,292         Root MSE        =     2.5395
+
+                            (Std. err. adjusted for 4,292 clusters in firm_id)
+------------------------------------------------------------------------------
+             |               Robust
+ mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ lag_alcohol |  -.0096901   .0250295    -0.39   0.699    -.0587609    .0393807
+        Size |   .5264996   .1202334     4.38   0.000     .2907799    .7622192
+         Lev |    1.43415   .3824153     3.75   0.000     .6844185    2.183882
+         ROA |   1.200426   .5079536     2.36   0.018     .2045747    2.196278
+      Growth |   .0621513   .0728601     0.85   0.394    -.0806923    .2049948
+    CashFlow |   .6373688    .379771     1.68   0.093    -.1071787    1.381916
+     FirmAge |   .3104303   .7656961     0.41   0.685     -1.19073     1.81159
+         SOE |   .1594059    .211375     0.75   0.451    -.2549984    .5738103
+       Board |  -.2902126   .3482437    -0.83   0.405    -.9729503     .392525
+       Indep |  -.5959056   .9824719    -0.61   0.544    -2.522058    1.330247
+        Dual |  -.0237168   .0888685    -0.27   0.790    -.1979451    .1505114
+        Top1 |  -.4578965   .7212485    -0.63   0.526    -1.871916    .9561234
+        Inst |   .6016261   .3619398     1.66   0.097    -.1079629    1.311215
+        Big4 |  -.0579808    .261385    -0.22   0.824    -.5704306     .454469
+       _cons |  -7.962296   3.401995    -2.34   0.019    -14.63197   -1.292626
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4292        4292           0    *|
+ industry_year |       133           1         132     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom lag_alcohol
+
+ ( 1)  lag_alcohol = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0096901   .0250295    -0.39   0.699    -.0587609    .0393807
+------------------------------------------------------------------------------
+
+. post `R' ("Table 5") ("Calendar-consistent lag") ("L.AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. 
+. reghdfe mca_current alcohol_culture $CONTROLS if sample_current == 1 & !(year == 2023 & inlist(province_id, 320000, 440000)), absorb(firm_id industry_year) vce(cluster firm_id)
+(dropped 406 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     26,897
+Absorbing 2 HDFE groups                           F(  14,   4144) =       4.57
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8391
+                                                  Adj R-squared   =     0.8083
+                                                  Within R-sq.    =     0.0111
+Number of clusters (firm_id) =      4,145         Root MSE        =     2.6167
+
+                               (Std. err. adjusted for 4,145 clusters in firm_id)
+---------------------------------------------------------------------------------
+                |               Robust
+    mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |  -.0281106    .028002    -1.00   0.315    -.0830095    .0267883
+           Size |    .488854   .1104773     4.42   0.000     .2722592    .7054488
+            Lev |   1.156323   .3487804     3.32   0.001     .4725264     1.84012
+            ROA |   1.348896   .5178395     2.60   0.009     .3336527    2.364139
+         Growth |   .0900865   .0645101     1.40   0.163     -.036388     .216561
+       CashFlow |   .4785121   .3666938     1.30   0.192    -.2404046    1.197429
+        FirmAge |  -.5075514   .7090246    -0.72   0.474     -1.89762    .8825173
+            SOE |   .2598974   .1892509     1.37   0.170    -.1111358    .6309306
+          Board |  -.3745029   .3213859    -1.17   0.244    -1.004592     .255586
+          Indep |  -.5972636   .8848976    -0.67   0.500    -2.332138     1.13761
+           Dual |  -.0382164      .0833    -0.46   0.646    -.2015292    .1250964
+           Top1 |  -.8569654   .6668025    -1.29   0.199    -2.164256    .4503253
+           Inst |   .6886523   .3433109     2.01   0.045     .0155788    1.361726
+           Big4 |   .0731944   .2572693     0.28   0.776    -.4311915    .5775803
+          _cons |  -4.500699   3.109613    -1.45   0.148    -10.59721    1.595812
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4145        4145           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+. lincom alcohol_culture
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0281106    .028002    -1.00   0.315    -.0830095    .0267883
+------------------------------------------------------------------------------
+
+. post `R' ("Table 5") ("Exclude high-zero province-years") ("AlcoholPOI") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust)) (e(df_a)) (e(num_singletons))
+
+. 
+. preserve
+
+. keep firm_id year esample_table3 esample_no2023 sample_table4
+
+. sort firm_id year
+
+. save "$RESULTS/samples/estimation_sample_flags.dta", replace
+file <project_root>/04_results/samples/estimation_sample_flags.dta saved
+
+. export delimited using "$RESULTS/samples/estimation_sample_flags.csv", replace
+file <project_root>/04_results/samples/estimation_sample_flags.csv saved
+
+. restore
+
+. 
+. postclose `R'
+
+. use "$RESULTS/tables_3_to_5.dta", clear
+
+. sort table model
+
+. export delimited using "$RESULTS/tables_3_to_5.csv", replace datafmt
+file <project_root>/04_results/tables_3_to_5.csv saved
+
+. log close
+      name:  <unnamed>
+       log:  <project_root>/05_logs/02_tables_3_to_5.log
+  log type:  text
+ closed on:  19 Nov 2026, 15:47:26
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

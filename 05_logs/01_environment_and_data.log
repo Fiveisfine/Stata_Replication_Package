@@ -1,0 +1,325 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <project_root>/05_logs/01_environment_and_data.log
+  log type:  text
+ opened on:  19 Nov 2026, 15:46:38
+
+. 
+. about
+
+Stata/MP 18.0 for Windows (64-bit x86-64)
+Revision 07 Jun 2023
+Copyright 1985-2023 StataCorp LLC
+
+Total physical memory:       32.00 GB
+Available physical memory:   13.53 GB
+
+Stata license: Single-user 2-core  perpetual
+Serial number: 501806366048
+  Licensed to: BMLZYK
+               不迷路资源库
+
+. which reghdfe
+<stata_ado>\r\reghdfe.ado
+*! version 6.13.1 10Jan2026
+
+. which ftools
+<stata_ado>\f\ftools.ado
+*! version 2.50.0 09jan2026
+
+. 
+. use "$PANEL", clear
+
+. describe
+
+Contains data from <project_root>/02_data/analysis_panel.dta
+ Observations:        40,692                  
+    Variables:            76                  2 Nov 2026 18:46
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+year            int     %10.0g                统计年份
+firm_id         long    %12.0g                
+alcohol_culture double  %10.0g                (mean) alcohol_culture
+mca_current     double  %10.0g                (mean) mca_current
+investor_green  double  %10.0g                (mean) investor_green
+green_transit~n double  %10.0g                (mean) green_transition
+greenwash       double  %10.0g                (mean) greenwash
+env_investment  double  %10.0g                (mean) env_investment
+env_reg         double  %10.0g                (mean) env_reg
+night_light     double  %10.0g                (mean) night_light
+city_gdp        double  %10.0g                (mean) city_gdp
+pc_gdp          double  %10.0g                (mean) pc_gdp
+gdp_growth      double  %10.0g                (mean) gdp_growth
+trust1          double  %10.0g                (mean) trust1
+trust2          double  %10.0g                (mean) trust2
+Size            float   %9.0g                 (mean) Size
+Lev             float   %9.0g                 (mean) Lev
+ROA             float   %9.0g                 (mean) ROA
+Growth          float   %9.0g                 (mean) Growth
+CashFlow        float   %9.0g                 (mean) CashFlow
+FirmAge         float   %9.0g                 (mean) FirmAge
+Board           float   %9.0g                 (mean) Board
+Indep           double  %10.0g                (mean) Indep
+Top1            double  %10.0g                (mean) Top1
+Inst            double  %10.0g                (mean) Inst
+total_poi_5km   double  %12.0g                (mean) total_poi_5km
+restaurant_po~m double  %8.0g                 (mean) restaurant_poi_5km
+entertain_poi~m float   %8.0g                 (mean) entertain_poi_5km
+hotel_poi_5km   float   %8.0g                 (mean) hotel_poi_5km
+alcohol_poi_5km float   %8.0g                 (mean) alcohol_poi_5km
+ln_total_poi_~m float   %9.0g                 (mean) ln_total_poi_5km
+ln_restaurant~m float   %9.0g                 (mean) ln_restaurant_poi_5km
+ln_entertain_~m float   %9.0g                 (mean) ln_entertain_poi_5km
+ln_hotel_poi_~m float   %9.0g                 (mean) ln_hotel_poi_5km
+ln_alcohol_po~m float   %9.0g                 (mean) ln_alcohol_poi_5km
+ln_shopping_p~m float   %9.0g                 (mean) ln_shopping_poi_5km
+ln_life_poi_5km float   %9.0g                 (mean) ln_life_poi_5km
+ln_company_po~m float   %9.0g                 (mean) ln_company_poi_5km
+ln_finance_po~m float   %9.0g                 (mean) ln_finance_poi_5km
+alcohol_share~m float   %9.0g                 (mean) alcohol_share_5km
+coord_available float   %8.0g                 (mean) coord_available
+poi_source_av~e float   %8.0g                 (mean) poi_source_available
+industry_id     long    %48.0g                (firstnm) industry_id
+city_id         long    %12.0g                (firstnm) city_id
+province_id     long    %12.0g                (firstnm) province_id
+SOE             byte    %10.0g                (firstnm) SOE
+Dual            byte    %10.0g                (firstnm) Dual
+Big4            byte    %9.0g                 (firstnm) Big4
+is_finance      byte    %8.0g                 (firstnm) is_finance
+is_stpt         byte    %8.0g                 (firstnm) is_stpt
+change_city     byte    %8.0g                 (firstnm) change_city
+Pollute         byte    %9.0g                 (firstnm) Pollute
+HighTech        byte    %9.0g                 (firstnm) HighTech
+OverseaBack     byte    %10.0g                (firstnm) OverseaBack
+mca_official_~w double  %10.0g                MCA_raw
+mca_official_~d double  %10.0g                Scaled_MCA_raw
+industry_year   long    %12.0g                group(industry_id year)
+city_year       long    %12.0g                group(city_id year)
+province_year   long    %12.0g                group(province_id year)
+ln_city_gdp     double  %10.0g                
+ln_pc_gdp       double  %10.0g                
+ln_night_light  double  %10.0g                
+mca_current_o~l double  %10.0g                (mean) mca_current
+mca_~d_original double  %10.0g                Scaled_MCA_raw
+mca_~w_original double  %10.0g                MCA_raw
+alcohol_cultu~l double  %10.0g                (mean) alcohol_culture
+eligible_cont~s byte    %8.0g                 
+sample_current  byte    %8.0g                 
+sample_official byte    %8.0g                 
+sample_common   byte    %8.0g                 
+sample_cur~2023 byte    %8.0g                 
+sample_off~2023 byte    %8.0g                 
+sample_com~2023 byte    %8.0g                 
+mca_current_z~r double  %10.0g                
+mca_official_~r double  %10.0g                
+alcohol_z_year  double  %10.0g                
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorted by: year
+
+. isid firm_id year
+
+. duplicates report firm_id year
+
+Duplicates in terms of firm_id year
+
+--------------------------------------
+   Copies | Observations       Surplus
+----------+---------------------------
+        1 |        40692             0
+--------------------------------------
+
+. assert inrange(year, 2012, 2023)
+
+. 
+. foreach v in mca_current alcohol_culture investor_green Pollute $CONTROLS {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         display as error "Required variable missing: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. 
+. count if sample_current == 1
+  28,574
+
+. tabulate year if sample_current == 1, missing
+
+     统计年 |
+         份 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2012 |      1,779        6.23        6.23
+       2013 |      1,994        6.98       13.20
+       2015 |      2,110        7.38       20.59
+       2016 |      2,308        8.08       28.67
+       2017 |      2,539        8.89       37.55
+       2018 |      2,932       10.26       47.81
+       2020 |      3,124       10.93       58.75
+       2021 |      3,432       12.01       70.76
+       2022 |      4,009       14.03       84.79
+       2023 |      4,347       15.21      100.00
+------------+-----------------------------------
+      Total |     28,574      100.00
+
+. misstable summarize mca_current alcohol_culture investor_green Pollute $CONTROLS
+                                                               Obs<.
+                                                +------------------------------
+               |                                | Unique
+      Variable |     Obs=.     Obs>.     Obs<.  | values        Min         Max
+  -------------+--------------------------------+------------------------------
+   mca_current |     2,717              37,975  |   >500          0    30.68739
+  alcohol_cu~e |     3,712              36,980  |   >500          0    7.113956
+  investor_g~n |    20,528              20,164  |   >500          0       77.78
+       Pollute |     1,977              38,715  |      2          0           1
+          Size |     1,977              38,715  |   >500   20.00844    26.24557
+           Lev |     1,977              38,715  |   >500   .0557857    .8859845
+           ROA |     1,977              38,715  |   >500  -.2299343    .1946489
+        Growth |     4,832              35,860  |   >500  -.5586696    2.176615
+      CashFlow |     1,977              38,715  |   >500  -.1488751    .2438471
+       FirmAge |     1,977              38,715  |     30   2.079442    3.610918
+           SOE |     1,977              38,715  |      2          0           1
+         Board |     1,986              38,706  |     10   1.609438    2.639057
+         Indep |     1,986              38,706  |     19      .3333       .5714
+          Dual |     2,952              37,740  |      2          0           1
+          Top1 |     1,983              38,709  |   >500    .081242     .736565
+          Inst |     2,010              38,682  |   >500    .003503     .907787
+          Big4 |     1,983              38,709  |      2          0           1
+  -----------------------------------------------------------------------------
+
+. 
+. use "$RECON", clear
+
+. describe
+
+Contains data from <project_root>/02_data/reconstructed_poi_panel.dta
+ Observations:        40,692                  
+    Variables:           103                  14 Nov 2026 23:37
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+firm_id         long    %12.0g                
+year            int     %8.0g                 
+industry_year   long    %12.0g                
+city_year       long    %12.0g                
+city_id         double  %10.0g                
+province_id     double  %10.0g                
+current         double  %10.0g                
+official        double  %10.0g                
+csmar           double  %10.0g                
+old_v2          float   %9.0g                 
+Pollute         double  %10.0g                
+green_z         double  %10.0g                
+v3_main_eligi~e byte    %8.0g                 
+usable_experi~l byte    %8.0g                 
+Size            float   %9.0g                 
+Lev             float   %9.0g                 
+ROA             float   %9.0g                 
+Growth          float   %9.0g                 
+CashFlow        float   %9.0g                 
+FirmAge         float   %9.0g                 
+SOE             double  %10.0g                
+Board           float   %9.0g                 
+Indep           double  %10.0g                
+Dual            double  %10.0g                
+Top1            double  %10.0g                
+Inst            double  %10.0g                
+Big4            double  %10.0g                
+log_retail_1km  double  %10.0g                
+log_bar_1km     double  %10.0g                
+log_nightcl~1km double  %10.0g                
+log_ktv_1km     double  %10.0g                
+log_disco_1km   double  %10.0g                
+log_combine~1km double  %10.0g                
+log_nightli~1km double  %10.0g                
+log_assiste~1km double  %10.0g                
+log_old_key~1km double  %10.0g                
+log_total_1km   double  %10.0g                
+log_restaur~1km double  %10.0g                
+log_enterta~1km double  %10.0g                
+log_shoppin~1km double  %10.0g                
+log_nonalco~1km double  %10.0g                
+log_witho~l_1km double  %10.0g                
+log_witho~r_1km double  %10.0g                
+log_witho~b_1km double  %10.0g                
+log_witho~v_1km double  %10.0g                
+log_witho~o_1km double  %10.0g                
+log_retail_3km  double  %10.0g                
+log_bar_3km     double  %10.0g                
+log_nightcl~3km double  %10.0g                
+log_ktv_3km     double  %10.0g                
+log_disco_3km   double  %10.0g                
+log_combine~3km double  %10.0g                
+log_nightli~3km double  %10.0g                
+log_assiste~3km double  %10.0g                
+log_old_key~3km double  %10.0g                
+log_total_3km   double  %10.0g                
+log_restaur~3km double  %10.0g                
+log_enterta~3km double  %10.0g                
+log_shoppin~3km double  %10.0g                
+log_nonalco~3km double  %10.0g                
+log_witho~l_3km double  %10.0g                
+log_witho~r_3km double  %10.0g                
+log_witho~b_3km double  %10.0g                
+log_witho~v_3km double  %10.0g                
+log_witho~o_3km double  %10.0g                
+log_retail_5km  double  %10.0g                
+log_bar_5km     double  %10.0g                
+log_nightcl~5km double  %10.0g                
+log_ktv_5km     double  %10.0g                
+log_disco_5km   double  %10.0g                
+log_combine~5km double  %10.0g                
+log_nightli~5km double  %10.0g                
+log_assiste~5km double  %10.0g                
+log_old_key~5km double  %10.0g                
+log_total_5km   double  %10.0g                
+log_restaur~5km double  %10.0g                
+log_enterta~5km double  %10.0g                
+log_shoppin~5km double  %10.0g                
+log_nonalco~5km double  %10.0g                
+log_witho~l_5km double  %10.0g                
+log_witho~r_5km double  %10.0g                
+log_witho~b_5km double  %10.0g                
+log_witho~v_5km double  %10.0g                
+log_witho~o_5km double  %10.0g                
+log_retail_10km double  %10.0g                
+log_bar_10km    double  %10.0g                
+log_nightcl~0km double  %10.0g                
+log_ktv_10km    double  %10.0g                
+log_disco_10km  double  %10.0g                
+log_combine~0km double  %10.0g                
+log_nightli~0km double  %10.0g                
+log_assiste~0km double  %10.0g                
+log_old_key~0km double  %10.0g                
+log_total_10km  double  %10.0g                
+log_restaur~0km double  %10.0g                
+log_enterta~0km double  %10.0g                
+log_shoppin~0km double  %10.0g                
+log_nonalco~0km double  %10.0g                
+log_with~l_10km double  %10.0g                
+log_with~r_10km double  %10.0g                
+log_with~b_10km double  %10.0g                
+log_with~v_10km double  %10.0g                
+log_with~o_10km double  %10.0g                
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+
+. isid firm_id year
+
+. foreach v in current csmar log_combined_5km Pollute v3_main_eligible $CONTROLS {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         display as error "Required reconstructed-panel variable missing: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. 
+. log close
+      name:  <unnamed>
+       log:  <project_root>/05_logs/01_environment_and_data.log
+  log type:  text
+ closed on:  19 Nov 2026, 15:46:44
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

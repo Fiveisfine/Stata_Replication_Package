@@ -1,0 +1,882 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <project_root>/05_logs/03_tables_6_to_7.log
+  log type:  text
+ opened on:  19 Nov 2026, 15:47:26
+
+. 
+. use "$PANEL", clear
+
+. quietly summarize investor_green if sample_current == 1
+
+. gen double investor_green_z = (investor_green - r(mean)) / r(sd) if !missing(investor_green)
+(20,528 missing values generated)
+
+. 
+. tempname R JN
+
+. postfile `R' str12 table str36 model str32 contrast double b se p lb ub N firms using "$RESULTS/tables_6_to_7.dta", replace
+
+. postfile `JN' str12 sample double root_low root_high observed_min observed_max N firms using "$RESULTS/johnson_neyman.dta", replace
+
+. 
+. * Table 6, Panel A: InvestorGreen moderation.
+. foreach window in full no2023 {
+  2.     local condition "sample_current == 1 & !missing(investor_green_z)"
+  3.     if "`window'" == "no2023" local condition "`condition' & year != 2023"
+  4.     reghdfe mca_current c.alcohol_culture##c.investor_green_z $CONTROLS if `condition', absorb(firm_id industry_year) vce(cluster firm_id)
+  5.     lincom c.alcohol_culture#c.investor_green_z
+  6.     post `R' ("Table 6") ("InvestorGreen `window'") ("Interaction") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust))
+  7.     lincom alcohol_culture - c.alcohol_culture#c.investor_green_z
+  8.     post `R' ("Table 6") ("InvestorGreen `window'") ("Slope at -1 SD") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust))
+  9.     lincom alcohol_culture
+ 10.     post `R' ("Table 6") ("InvestorGreen `window'") ("Slope at mean") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust))
+ 11.     lincom alcohol_culture + c.alcohol_culture#c.investor_green_z
+ 12.     post `R' ("Table 6") ("InvestorGreen `window'") ("Slope at +1 SD") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust))
+ 13.     ereturn list
+ 14. 
+.     margins, dydx(alcohol_culture) at(investor_green_z=(-2(.1)2)) saving("$RESULTS/investorgreen_margins_`window'.dta", replace)
+ 15.     marginsplot, recast(line) recastci(rarea) yline(0, lpattern(dash)) title("InvestorGreen moderation: `window'") name(ig_`window', replace)
+ 16.     graph export "$RESULTS/figures/investorgreen_margins_`window'.png", replace width(2400)
+ 17.     preserve
+ 18.     use "$RESULTS/investorgreen_margins_`window'.dta", clear
+ 19.     export delimited using "$RESULTS/investorgreen_margins_`window'.csv", replace datafmt
+ 20.     restore
+ 21. 
+.     scalar b1 = _b[alcohol_culture]
+ 22.     scalar b3 = _b[c.alcohol_culture#c.investor_green_z]
+ 23.     matrix V = e(V)
+ 24.     scalar v11 = V["alcohol_culture","alcohol_culture"]
+ 25.     scalar v33 = V["c.alcohol_culture#c.investor_green_z","c.alcohol_culture#c.investor_green_z"]
+ 26.     scalar v13 = V["alcohol_culture","c.alcohol_culture#c.investor_green_z"]
+ 27.     scalar tc = invttail(e(df_r), .025)
+ 28.     scalar A = b3^2 - tc^2*v33
+ 29.     scalar B = 2*b1*b3 - 2*tc^2*v13
+ 30.     scalar C = b1^2 - tc^2*v11
+ 31.     scalar D = B^2 - 4*A*C
+ 32.     scalar lo = .
+ 33.     scalar hi = .
+ 34.     if D >= 0 & A != 0 {
+ 35.         scalar r1 = (-B-sqrt(D))/(2*A)
+ 36.         scalar r2 = (-B+sqrt(D))/(2*A)
+ 37.         scalar lo = min(r1,r2)
+ 38.         scalar hi = max(r1,r2)
+ 39.     }
+ 40.     quietly summarize investor_green_z if e(sample)
+ 41.     post `JN' ("`window'") (lo) (hi) (r(min)) (r(max)) (e(N)) (e(N_clust))
+ 42. }
+(dropped 778 singleton observations)
+(MWFE estimator converged in 34 iterations)
+
+HDFE Linear regression                            Number of obs   =     14,572
+Absorbing 2 HDFE groups                           F(  16,   3040) =       3.93
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8665
+                                                  Adj R-squared   =     0.8288
+                                                  Within R-sq.    =     0.0157
+Number of clusters (firm_id) =      3,041         Root MSE        =     2.5025
+
+                                                    (Std. err. adjusted for 3,041 clusters in firm_id)
+------------------------------------------------------------------------------------------------------
+                                     |               Robust
+                         mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------------------------+----------------------------------------------------------------
+                     alcohol_culture |  -.0306909   .0227166    -1.35   0.177    -.0752323    .0138506
+                    investor_green_z |  -.0594869   .0681002    -0.87   0.382    -.1930139    .0740402
+                                     |
+c.alcohol_culture#c.investor_green_z |   .0361182   .0158718     2.28   0.023     .0049977    .0672388
+                                     |
+                                Size |   .4718648     .14196     3.32   0.001     .1935175    .7502121
+                                 Lev |   1.998044   .4593999     4.35   0.000     1.097278     2.89881
+                                 ROA |   1.135298   .6715563     1.69   0.091    -.1814524    2.452048
+                              Growth |   .1085419   .0965781     1.12   0.261     -.080823    .2979069
+                            CashFlow |   .6609777   .5563326     1.19   0.235    -.4298485    1.751804
+                             FirmAge |  -.7332693    .978586    -0.75   0.454    -2.652027    1.185488
+                                 SOE |   .1835882   .2831937     0.65   0.517    -.3716824    .7388588
+                               Board |  -.5466199   .3579795    -1.53   0.127    -1.248526    .1552865
+                               Indep |  -1.414127   1.124566    -1.26   0.209    -3.619114     .790861
+                                Dual |  -.0636553   .1114877    -0.57   0.568    -.2822543    .1549436
+                                Top1 |    .341236   .8015156     0.43   0.670    -1.230331    1.912803
+                                Inst |   .7286451   .4372454     1.67   0.096    -.1286815    1.585972
+                                Big4 |   .2120607   .4000599     0.53   0.596    -.5723547     .996476
+                               _cons |  -3.269084   4.099367    -0.80   0.425     -11.3069    4.768729
+------------------------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3041        3041           0    *|
+ industry_year |       154           1         153     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  c.alcohol_culture#c.investor_green_z = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0361182   .0158718     2.28   0.023     .0049977    .0672388
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture - c.alcohol_culture#c.investor_green_z = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0668091   .0284503    -2.35   0.019    -.1225929   -.0110253
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0306909   .0227166    -1.35   0.177    -.0752323    .0138506
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture + c.alcohol_culture#c.investor_green_z = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0054274   .0269535     0.20   0.840    -.0474216    .0582764
+------------------------------------------------------------------------------
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  34
+         e(sumweights) =  14572
+        e(r2_a_within) =  .0143109965291377
+               e(r2_a) =  .828760484342544
+          e(r2_within) =  .0156970946180404
+                 e(r2) =  .8664728998078364
+               e(ll_0) =  -32345.58060308179
+                 e(ll) =  -32230.30443548327
+                  e(F) =  3.928838619024924
+               e(rmse) =  2.502454574255686
+                e(mss) =  461713.6954634923
+                e(rss) =  71152.01281877444
+         e(tss_within) =  72286.70405190345
+                e(tss) =  532865.7082822667
+               e(df_m) =  16
+               e(df_r) =  3040
+               e(rank) =  16
+                  e(N) =  14572
+             e(N_full) =  15350
+     e(num_singletons) =  778
+    e(drop_singletons) =  1
+        e(df_a_nested) =  3041
+     e(df_a_redundant) =  3042
+       e(df_a_initial) =  3195
+               e(df_a) =  153
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  3041
+      e(N_clustervars) =  1
+            e(N_clust) =  3041
+
+macros:
+   e(extended_absvars) : "firm_id industry_year"
+            e(absvars) : "firm_id industry_year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture investor_green_z c.alcohol_culture#c.investor_green_z Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current c.alcohol_culture##c.investor_green_z Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 if sample_current == 1 & !missing(investor_green_z), absorb(firm_id industry_year) vce(cluster.."
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 17
+                  e(V) :  17 x 17
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+Average marginal effects                                Number of obs = 14,572
+Model VCE: Robust
+
+Expression: Linear prediction, predict()
+dy/dx wrt:  alcohol_culture
+1._at:  investor_green_z =   -2
+2._at:  investor_green_z = -1.9
+3._at:  investor_green_z = -1.8
+4._at:  investor_green_z = -1.7
+5._at:  investor_green_z = -1.6
+6._at:  investor_green_z = -1.5
+7._at:  investor_green_z = -1.4
+8._at:  investor_green_z = -1.3
+9._at:  investor_green_z = -1.2
+10._at: investor_green_z = -1.1
+11._at: investor_green_z =   -1
+12._at: investor_green_z =  -.9
+13._at: investor_green_z =  -.8
+14._at: investor_green_z =  -.7
+15._at: investor_green_z =  -.6
+16._at: investor_green_z =  -.5
+17._at: investor_green_z =  -.4
+18._at: investor_green_z =  -.3
+19._at: investor_green_z =  -.2
+20._at: investor_green_z =  -.1
+21._at: investor_green_z =    0
+22._at: investor_green_z =   .1
+23._at: investor_green_z =   .2
+24._at: investor_green_z =   .3
+25._at: investor_green_z =   .4
+26._at: investor_green_z =   .5
+27._at: investor_green_z =   .6
+28._at: investor_green_z =   .7
+29._at: investor_green_z =   .8
+30._at: investor_green_z =   .9
+31._at: investor_green_z =    1
+32._at: investor_green_z =  1.1
+33._at: investor_green_z =  1.2
+34._at: investor_green_z =  1.3
+35._at: investor_green_z =  1.4
+36._at: investor_green_z =  1.5
+37._at: investor_green_z =  1.6
+38._at: investor_green_z =  1.7
+39._at: investor_green_z =  1.8
+40._at: investor_green_z =  1.9
+41._at: investor_green_z =    2
+
+---------------------------------------------------------------------------------
+                |            Delta-method
+                |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |
+            _at |
+             1  |  -.1029273   .0400827    -2.57   0.010    -.1814881   -.0243666
+             2  |  -.0993155   .0387844    -2.56   0.010    -.1753316   -.0232994
+             3  |  -.0957037   .0375084    -2.55   0.011    -.1692188   -.0221886
+             4  |  -.0920919   .0362569    -2.54   0.011    -.1631541   -.0210296
+             5  |    -.08848   .0350326    -2.53   0.012    -.1571427   -.0198173
+             6  |  -.0848682   .0338385    -2.51   0.012    -.1511905   -.0185459
+             7  |  -.0812564   .0326779    -2.49   0.013    -.1453039   -.0172089
+             8  |  -.0776446   .0315544    -2.46   0.014    -.1394901    -.015799
+             9  |  -.0740327   .0304722    -2.43   0.015    -.1337572   -.0143083
+            10  |  -.0704209   .0294359    -2.39   0.017    -.1281141   -.0127277
+            11  |  -.0668091   .0284503    -2.35   0.019    -.1225707   -.0110475
+            12  |  -.0631973   .0275211    -2.30   0.022    -.1171376   -.0092569
+            13  |  -.0595854   .0266541    -2.24   0.025    -.1118265   -.0073444
+            14  |  -.0559736   .0258555    -2.16   0.030    -.1066494   -.0052978
+            15  |  -.0523618   .0251319    -2.08   0.037    -.1016194   -.0031042
+            16  |    -.04875   .0244899    -1.99   0.047    -.0967492   -.0007507
+            17  |  -.0451381   .0239361    -1.89   0.059     -.092052    .0017757
+            18  |  -.0415263   .0234767    -1.77   0.077    -.0875398    .0044871
+            19  |  -.0379145   .0231174    -1.64   0.101    -.0832237    .0073947
+            20  |  -.0343027   .0228628    -1.50   0.134     -.079113    .0105077
+            21  |  -.0306909   .0227166    -1.35   0.177    -.0752146    .0138329
+            22  |   -.027079   .0226807    -1.19   0.233    -.0715325    .0173744
+            23  |  -.0234672   .0227558    -1.03   0.302    -.0680678    .0211334
+            24  |  -.0198554   .0229407    -0.87   0.387    -.0648184    .0251076
+            25  |  -.0162436   .0232328    -0.70   0.484    -.0617791    .0292919
+            26  |  -.0126317   .0236282    -0.53   0.593    -.0589421    .0336786
+            27  |  -.0090199   .0241217    -0.37   0.708    -.0562975    .0382577
+            28  |  -.0054081   .0247074    -0.22   0.827    -.0538337    .0430176
+            29  |  -.0017963   .0253791    -0.07   0.944    -.0515383    .0479458
+            30  |   .0018156     .02613     0.07   0.945    -.0493983    .0530294
+            31  |   .0054274   .0269535     0.20   0.840    -.0474006    .0582553
+            32  |   .0090392   .0278433     0.32   0.745    -.0455326     .063611
+            33  |    .012651   .0287931     0.44   0.660    -.0437824    .0690845
+            34  |   .0162628   .0297972     0.55   0.585    -.0421386    .0746643
+            35  |   .0198747   .0308504     0.64   0.519    -.0405909    .0803403
+            36  |   .0234865   .0319477     0.74   0.462    -.0391298    .0861028
+            37  |   .0270983   .0330847     0.82   0.413    -.0377466    .0919432
+            38  |   .0307101   .0342576     0.90   0.370    -.0364336    .0978539
+            39  |    .034322   .0354628     0.97   0.333    -.0351838    .1038277
+            40  |   .0379338    .036697     1.03   0.301     -.033991    .1098586
+            41  |   .0415456   .0379575     1.09   0.274    -.0328497    .1159409
+---------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: investor_green_z
+file <project_root>/04_results/figures/investorgreen_margins_full.png saved as PNG format
+(Created by command margins; also see char list)
+file <project_root>/04_results/investorgreen_margins_full.csv saved
+(dropped 851 singleton observations)
+(MWFE estimator converged in 34 iterations)
+
+HDFE Linear regression                            Number of obs   =     11,088
+Absorbing 2 HDFE groups                           F(  16,   2333) =       3.43
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8522
+                                                  Adj R-squared   =     0.8094
+                                                  Within R-sq.    =     0.0171
+Number of clusters (firm_id) =      2,334         Root MSE        =     2.5128
+
+                                                    (Std. err. adjusted for 2,334 clusters in firm_id)
+------------------------------------------------------------------------------------------------------
+                                     |               Robust
+                         mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------------------------+----------------------------------------------------------------
+                     alcohol_culture |  -.0313327   .0438068    -0.72   0.475     -.117237    .0545716
+                    investor_green_z |   .0069734   .0822644     0.08   0.932    -.1543454    .1682923
+                                     |
+c.alcohol_culture#c.investor_green_z |   .0211177   .0206594     1.02   0.307    -.0193949    .0616303
+                                     |
+                                Size |   .5336758   .1495611     3.57   0.000     .2403892    .8269623
+                                 Lev |   1.853817   .4635009     4.00   0.000     .9449003    2.762733
+                                 ROA |   1.351689   .7265995     1.86   0.063    -.0731593    2.776537
+                              Growth |   .0686183   .1014282     0.68   0.499    -.1302806    .2675171
+                            CashFlow |   .8611741   .6493149     1.33   0.185    -.4121202    2.134468
+                             FirmAge |  -.6483395   .9989439    -0.65   0.516     -2.60725    1.310571
+                                 SOE |   .1423438   .3088804     0.46   0.645    -.4633649    .7480525
+                               Board |   -.681876   .3933295    -1.73   0.083    -1.453188    .0894359
+                               Indep |  -1.475485   1.233881    -1.20   0.232    -3.895103     .944134
+                                Dual |  -.1412053   .1153535    -1.22   0.221    -.3674113    .0850008
+                                Top1 |   .5395499   .8189019     0.66   0.510    -1.066301    2.145401
+                                Inst |   .8318115   .4561128     1.82   0.068    -.0626171     1.72624
+                                Big4 |   .0622604   .3782931     0.16   0.869    -.6795653    .8040861
+                               _cons |  -5.009272   4.184441    -1.20   0.231    -13.21488    3.196339
+------------------------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      2334        2334           0    *|
+ industry_year |       138           1         137     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  c.alcohol_culture#c.investor_green_z = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0211177   .0206594     1.02   0.307    -.0193949    .0616303
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture - c.alcohol_culture#c.investor_green_z = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0524504   .0466362    -1.12   0.261     -.143903    .0390023
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0313327   .0438068    -0.72   0.475     -.117237    .0545716
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture + c.alcohol_culture#c.investor_green_z = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0102151   .0501673    -0.20   0.839    -.1085922    .0881621
+------------------------------------------------------------------------------
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  34
+         e(sumweights) =  11088
+        e(r2_a_within) =  .0153210044422285
+               e(r2_a) =  .8094320501784801
+          e(r2_within) =  .017149351190392
+                 e(r2) =  .8521624482353303
+               e(ll_0) =  -24637.38495319817
+                 e(ll) =  -24541.48426214014
+                  e(F) =  3.434533951709063
+               e(rmse) =  2.512783933764043
+                e(mss) =  313037.8639691055
+                e(rss) =  54307.42872402899
+         e(tss_within) =  55255.016405396
+                e(tss) =  367345.2926931345
+               e(df_m) =  16
+               e(df_r) =  2333
+               e(rank) =  16
+                  e(N) =  11088
+             e(N_full) =  11939
+     e(num_singletons) =  851
+    e(drop_singletons) =  1
+        e(df_a_nested) =  2334
+     e(df_a_redundant) =  2335
+       e(df_a_initial) =  2472
+               e(df_a) =  137
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  2334
+      e(N_clustervars) =  1
+            e(N_clust) =  2334
+
+macros:
+   e(extended_absvars) : "firm_id industry_year"
+            e(absvars) : "firm_id industry_year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture investor_green_z c.alcohol_culture#c.investor_green_z Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current c.alcohol_culture##c.investor_green_z Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 if sample_current == 1 & !missing(investor_green_z) & year != 2023, absorb(firm_id industry_ye.."
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 17
+                  e(V) :  17 x 17
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+Average marginal effects                                Number of obs = 11,088
+Model VCE: Robust
+
+Expression: Linear prediction, predict()
+dy/dx wrt:  alcohol_culture
+1._at:  investor_green_z =   -2
+2._at:  investor_green_z = -1.9
+3._at:  investor_green_z = -1.8
+4._at:  investor_green_z = -1.7
+5._at:  investor_green_z = -1.6
+6._at:  investor_green_z = -1.5
+7._at:  investor_green_z = -1.4
+8._at:  investor_green_z = -1.3
+9._at:  investor_green_z = -1.2
+10._at: investor_green_z = -1.1
+11._at: investor_green_z =   -1
+12._at: investor_green_z =  -.9
+13._at: investor_green_z =  -.8
+14._at: investor_green_z =  -.7
+15._at: investor_green_z =  -.6
+16._at: investor_green_z =  -.5
+17._at: investor_green_z =  -.4
+18._at: investor_green_z =  -.3
+19._at: investor_green_z =  -.2
+20._at: investor_green_z =  -.1
+21._at: investor_green_z =    0
+22._at: investor_green_z =   .1
+23._at: investor_green_z =   .2
+24._at: investor_green_z =   .3
+25._at: investor_green_z =   .4
+26._at: investor_green_z =   .5
+27._at: investor_green_z =   .6
+28._at: investor_green_z =   .7
+29._at: investor_green_z =   .8
+30._at: investor_green_z =   .9
+31._at: investor_green_z =    1
+32._at: investor_green_z =  1.1
+33._at: investor_green_z =  1.2
+34._at: investor_green_z =  1.3
+35._at: investor_green_z =  1.4
+36._at: investor_green_z =  1.5
+37._at: investor_green_z =  1.6
+38._at: investor_green_z =  1.7
+39._at: investor_green_z =  1.8
+40._at: investor_green_z =  1.9
+41._at: investor_green_z =    2
+
+---------------------------------------------------------------------------------
+                |            Delta-method
+                |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |
+            _at |
+             1  |  -.0735681   .0573101    -1.28   0.199    -.1858938    .0387576
+             2  |  -.0714563   .0559918    -1.28   0.202    -.1811982    .0382856
+             3  |  -.0693445   .0547198    -1.27   0.205    -.1765933    .0379043
+             4  |  -.0672328   .0534973    -1.26   0.209    -.1720856      .03762
+             5  |   -.065121   .0523279    -1.24   0.213    -.1676817    .0374398
+             6  |  -.0630092   .0512151    -1.23   0.219     -.163389    .0373705
+             7  |  -.0608975   .0501628    -1.21   0.225    -.1592147    .0374198
+             8  |  -.0587857   .0491748    -1.20   0.232    -.1551664    .0375951
+             9  |  -.0566739    .048255    -1.17   0.240     -.151252    .0379041
+            10  |  -.0545622   .0474075    -1.15   0.250    -.1474791    .0383548
+            11  |  -.0524504   .0466362    -1.12   0.261    -.1438556    .0389548
+            12  |  -.0503386   .0459449    -1.10   0.273    -.1403889    .0397116
+            13  |  -.0482269   .0453372    -1.06   0.287    -.1370862    .0406325
+            14  |  -.0461151   .0448167    -1.03   0.303    -.1339541     .041724
+            15  |  -.0440033   .0443863    -0.99   0.322    -.1309988    .0429921
+            16  |  -.0418916   .0440486    -0.95   0.342    -.1282253    .0444422
+            17  |  -.0397798   .0438059    -0.91   0.364    -.1256379    .0460783
+            18  |   -.037668   .0436598    -0.86   0.388    -.1232396    .0479035
+            19  |  -.0355563   .0436111    -0.82   0.415    -.1210324    .0499199
+            20  |  -.0334445   .0436602    -0.77   0.444    -.1190169    .0521279
+            21  |  -.0313327   .0438068    -0.72   0.474    -.1171925     .054527
+            22  |   -.029221   .0440499    -0.66   0.507    -.1155572    .0571153
+            23  |  -.0271092    .044388    -0.61   0.541     -.114108    .0598896
+            24  |  -.0249974   .0448188    -0.56   0.577    -.1128406    .0628457
+            25  |  -.0228857   .0453397    -0.50   0.614    -.1117499    .0659786
+            26  |  -.0207739   .0459477    -0.45   0.651    -.1108298     .069282
+            27  |  -.0186621   .0466394    -0.40   0.689    -.1100737    .0727494
+            28  |  -.0165504   .0474111    -0.35   0.727    -.1094744    .0763737
+            29  |  -.0144386   .0482589    -0.30   0.765    -.1090243    .0801472
+            30  |  -.0123268    .049179    -0.25   0.802    -.1087159    .0840622
+            31  |  -.0102151   .0501673    -0.20   0.839    -.1085411     .088111
+            32  |  -.0081033   .0512199    -0.16   0.874    -.1084925    .0922859
+            33  |  -.0059915   .0523329    -0.11   0.909    -.1085622    .0965791
+            34  |  -.0038798   .0535026    -0.07   0.942    -.1087429    .1009834
+            35  |   -.001768   .0547253    -0.03   0.974    -.1090276    .1054916
+            36  |   .0003438   .0559975     0.01   0.995    -.1094094    .1100969
+            37  |   .0024555    .057316     0.04   0.966    -.1098818    .1147929
+            38  |   .0045673   .0586776     0.08   0.938    -.1104387    .1195734
+            39  |   .0066791   .0600794     0.11   0.911    -.1110745    .1244326
+            40  |   .0087908   .0615187     0.14   0.886    -.1117836    .1293653
+            41  |   .0109026   .0629928     0.17   0.863    -.1125611    .1343663
+---------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: investor_green_z
+file <project_root>/04_results/figures/investorgreen_margins_no2023.png saved as PNG format
+(Created by command margins; also see char list)
+file <project_root>/04_results/investorgreen_margins_no2023.csv saved
+
+. 
+. * Table 6 Panel B and Table 7: Pollute conditional slopes.
+. foreach window in full no2023 {
+  2.     local condition "sample_current == 1 & !missing(Pollute)"
+  3.     if "`window'" == "no2023" local condition "`condition' & year != 2023"
+  4.     reghdfe mca_current c.alcohol_culture##i.Pollute $CONTROLS if `condition', absorb(firm_id industry_year) vce(cluster firm_id)
+  5.     lincom alcohol_culture
+  6.     post `R' ("Table 7") ("Pollute `window'") ("Slope Pollute=0") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust))
+  7.     lincom alcohol_culture + 1.Pollute#c.alcohol_culture
+  8.     post `R' ("Table 7") ("Pollute `window'") ("Slope Pollute=1") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust))
+  9.     lincom 1.Pollute#c.alcohol_culture
+ 10.     post `R' ("Table 7") ("Pollute `window'") ("Difference in slopes") (r(estimate)) (r(se)) (r(p)) (r(lb)) (r(ub)) (e(N)) (e(N_clust))
+ 11.     ereturn list
+ 12.     if "`window'" == "full" {
+ 13.         margins Pollute, dydx(alcohol_culture) saving("$RESULTS/pollute_slopes_full.dta", replace)
+ 14.         marginsplot, recast(scatter) recastci(rcap) yline(0, lpattern(dash)) title("AlcoholPOI slopes by Pollute") name(pollute_slopes, replace)
+ 15.         graph export "$RESULTS/figures/pollute_conditional_slopes.png", replace width(2400)
+ 16.     }
+ 17. }
+(dropped 366 singleton observations)
+(MWFE estimator converged in 33 iterations)
+
+HDFE Linear regression                            Number of obs   =     28,208
+Absorbing 2 HDFE groups                           F(  16,   4306) =       6.14
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8403
+                                                  Adj R-squared   =     0.8101
+                                                  Within R-sq.    =     0.0142
+Number of clusters (firm_id) =      4,307         Root MSE        =     2.6229
+
+                                         (Std. err. adjusted for 4,307 clusters in firm_id)
+-------------------------------------------------------------------------------------------
+                          |               Robust
+              mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+--------------------------+----------------------------------------------------------------
+          alcohol_culture |  -.0703467   .0203557    -3.46   0.001    -.1102542   -.0304391
+                1.Pollute |    .342804   .3909587     0.88   0.381    -.4236766    1.109284
+                          |
+Pollute#c.alcohol_culture |
+                       1  |   .1750424   .0436509     4.01   0.000     .0894642    .2606206
+                          |
+                     Size |   .4887164   .1078646     4.53   0.000     .2772461    .7001866
+                      Lev |   1.343821   .3454346     3.89   0.000     .6665909     2.02105
+                      ROA |   1.254678   .5038161     2.49   0.013     .2669385    2.242417
+                   Growth |   .0912928    .063205     1.44   0.149    -.0326215    .2152072
+                 CashFlow |   .3594691   .3605135     1.00   0.319    -.3473231    1.066261
+                  FirmAge |  -.2467984    .701193    -0.35   0.725    -1.621498    1.127901
+                      SOE |   .2966115   .1909235     1.55   0.120    -.0776968    .6709198
+                    Board |  -.2427785   .3181504    -0.76   0.445    -.8665172    .3809601
+                    Indep |  -.6376782   .8713361    -0.73   0.464    -2.345946    1.070589
+                     Dual |   -.033089   .0851105    -0.39   0.697    -.1999494    .1337714
+                     Top1 |  -.6887327    .652875    -1.05   0.292    -1.968704    .5912386
+                     Inst |   .5570086   .3377781     1.65   0.099    -.1052104    1.219228
+                     Big4 |   .0151461   .2525637     0.06   0.952    -.4800089    .5103011
+                    _cons |  -5.592418    3.09193    -1.81   0.071    -11.65419    .4693568
+-------------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      4307        4307           0    *|
+ industry_year |       166           1         165     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0703467   .0203557    -3.46   0.001    -.1102542   -.0304391
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture + 1.Pollute#c.alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .1046958   .0411787     2.54   0.011     .0239644    .1854271
+------------------------------------------------------------------------------
+
+ ( 1)  1.Pollute#c.alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .1750424   .0436509     4.01   0.000     .0894642    .2606206
+------------------------------------------------------------------------------
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  33
+         e(sumweights) =  28208
+        e(r2_a_within) =  .0134978753863305
+               e(r2_a) =  .8100928276720695
+          e(r2_within) =  .0141628582812505
+                 e(r2) =  .8403021190619877
+               e(ll_0) =  -64982.63773431128
+                 e(ll) =  -64781.45674531482
+                  e(F) =  6.138864709142219
+               e(rmse) =  2.622867705945221
+                e(mss) =  858625.4594527126
+                e(rss) =  163180.198268559
+         e(tss_within) =  165524.4982797705
+                e(tss) =  1021805.657721272
+               e(df_m) =  16
+               e(df_r) =  4306
+               e(rank) =  16
+                  e(N) =  28208
+             e(N_full) =  28574
+     e(num_singletons) =  366
+    e(drop_singletons) =  1
+        e(df_a_nested) =  4307
+     e(df_a_redundant) =  4308
+       e(df_a_initial) =  4473
+               e(df_a) =  165
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  4307
+      e(N_clustervars) =  1
+            e(N_clust) =  4307
+
+macros:
+   e(extended_absvars) : "firm_id industry_year"
+            e(absvars) : "firm_id industry_year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture 1bn.Pollute 1bn.Pollute#c.alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current c.alcohol_culture##i.Pollute Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 if sample_current == 1 & !missing(Pollute), absorb(firm_id industry_year) vce(cluster firm_id)"
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 19
+                  e(V) :  19 x 19
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+Average marginal effects                                Number of obs = 28,208
+Model VCE: Robust
+
+Expression: Linear prediction, predict()
+dy/dx wrt:  alcohol_culture
+
+---------------------------------------------------------------------------------
+                |            Delta-method
+                |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+alcohol_culture |
+        Pollute |
+             0  |  -.0703467   .0203557    -3.46   0.001     -.110243   -.0304503
+             1  |   .1046958   .0411787     2.54   0.011     .0239871    .1854044
+---------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: Pollute
+file <project_root>/04_results/figures/pollute_conditional_slopes.png saved as PNG format
+(dropped 520 singleton observations)
+(MWFE estimator converged in 34 iterations)
+
+HDFE Linear regression                            Number of obs   =     23,707
+Absorbing 2 HDFE groups                           F(  16,   3814) =       4.88
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.8324
+                                                  Adj R-squared   =     0.7986
+                                                  Within R-sq.    =     0.0131
+Number of clusters (firm_id) =      3,815         Root MSE        =     2.6017
+
+                                         (Std. err. adjusted for 3,815 clusters in firm_id)
+-------------------------------------------------------------------------------------------
+                          |               Robust
+              mca_current | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+--------------------------+----------------------------------------------------------------
+          alcohol_culture |  -.0569224   .0317915    -1.79   0.073    -.1192523    .0054075
+                1.Pollute |   .3158082    .458682     0.69   0.491    -.5834774    1.215094
+                          |
+Pollute#c.alcohol_culture |
+                       1  |    .178699   .0507668     3.52   0.000     .0791663    .2782318
+                          |
+                     Size |    .483533   .1106536     4.37   0.000      .266587    .7004789
+                      Lev |   1.144496   .3399625     3.37   0.001     .4779698    1.811021
+                      ROA |   1.381165   .5152304     2.68   0.007     .3710114    2.391319
+                   Growth |   .0877975   .0616076     1.43   0.154    -.0329895    .2085844
+                 CashFlow |   .3491013   .3902571     0.89   0.371    -.4160313    1.114234
+                  FirmAge |  -.4753895   .7106733    -0.67   0.504    -1.868726    .9179467
+                      SOE |   .3009622   .1927239     1.56   0.118    -.0768896     .678814
+                    Board |  -.4283528   .3197136    -1.34   0.180    -1.055179    .1984732
+                    Indep |    -.62161   .8850474    -0.70   0.483    -2.356822    1.113602
+                     Dual |  -.0687089   .0855868    -0.80   0.422    -.2365091    .0990913
+                     Top1 |  -.6960696    .654415    -1.06   0.288    -1.979107    .5869673
+                     Inst |   .5862896   .3424453     1.71   0.087    -.0851039    1.257683
+                     Big4 |  -.1153131   .2272013    -0.51   0.612    -.5607608    .3301346
+                    _cons |  -4.663122   3.122434    -1.49   0.135    -10.78492    1.458678
+-------------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+       firm_id |      3815        3815           0    *|
+ industry_year |       149           1         148     |
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+
+ ( 1)  alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0569224   .0317915    -1.79   0.073    -.1192523    .0054075
+------------------------------------------------------------------------------
+
+ ( 1)  alcohol_culture + 1.Pollute#c.alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .1217766   .0500656     2.43   0.015     .0236187    .2199345
+------------------------------------------------------------------------------
+
+ ( 1)  1.Pollute#c.alcohol_culture = 0
+
+------------------------------------------------------------------------------
+ mca_current | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |    .178699   .0507668     3.52   0.000     .0791663    .2782318
+------------------------------------------------------------------------------
+
+scalars:
+    e(report_constant) =  1
+          e(converged) =  1
+                 e(ic) =  34
+         e(sumweights) =  23707
+        e(r2_a_within) =  .0122635072813523
+               e(r2_a) =  .7985586406590147
+          e(r2_within) =  .0130639420404436
+                 e(r2) =  .8323616326213212
+               e(ll_0) =  -54285.04834437338
+                 e(ll) =  -54129.1745125722
+                  e(F) =  4.884461389520913
+               e(rmse) =  2.601749776137254
+                e(mss) =  663059.8663280397
+                e(rss) =  133540.8422364496
+         e(tss_within) =  135308.504699422
+                e(tss) =  796600.7085644893
+               e(df_m) =  16
+               e(df_r) =  3814
+               e(rank) =  16
+                  e(N) =  23707
+             e(N_full) =  24227
+     e(num_singletons) =  520
+    e(drop_singletons) =  1
+        e(df_a_nested) =  3815
+     e(df_a_redundant) =  3816
+       e(df_a_initial) =  3964
+               e(df_a) =  148
+    e(N_hdfe_extended) =  2
+             e(N_hdfe) =  2
+           e(N_clust1) =  3815
+      e(N_clustervars) =  1
+            e(N_clust) =  3815
+
+macros:
+   e(extended_absvars) : "firm_id industry_year"
+            e(absvars) : "firm_id industry_year"
+             e(title2) : "Absorbing 2 HDFE groups"
+          e(dofmethod) : "pairwise clusters continuous"
+                e(vce) : "cluster"
+            e(vcetype) : "Robust"
+              e(title) : "HDFE Linear regression"
+          e(indepvars) : "alcohol_culture 1bn.Pollute 1bn.Pollute#c.alcohol_culture Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 _cons"
+             e(depvar) : "mca_current"
+       e(marginsnotok) : "Residuals SCore"
+           e(footnote) : "reghdfe_footnote"
+          e(estat_cmd) : "reghdfe_estat"
+            e(predict) : "reghdfe_p"
+              e(model) : "ols"
+            e(cmdline) : "reghdfe mca_current c.alcohol_culture##i.Pollute Size Lev ROA Growth CashFlow FirmAge SOE Board Indep Dual Top1 Inst Big4 if sample_current == 1 & !missing(Pollute) & year != 2023, absorb(firm_id industry_year) vce(cluster fi.."
+                e(cmd) : "reghdfe"
+           e(clustvar) : "firm_id"
+             e(title3) : "Statistics robust to heteroskedasticity"
+          e(clustvar1) : "firm_id"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 19
+                  e(V) :  19 x 19
+          e(dof_table) :  2 x 5
+
+functions:
+             e(sample)   
+
+. 
+. postclose `R'
+
+. postclose `JN'
+
+. use "$RESULTS/tables_6_to_7.dta", clear
+
+. sort table model contrast
+
+. export delimited using "$RESULTS/tables_6_to_7.csv", replace datafmt
+file <project_root>/04_results/tables_6_to_7.csv saved
+
+. use "$RESULTS/johnson_neyman.dta", clear
+
+. export delimited using "$RESULTS/johnson_neyman.csv", replace datafmt
+file <project_root>/04_results/johnson_neyman.csv saved
+
+. log close
+      name:  <unnamed>
+       log:  <project_root>/05_logs/03_tables_6_to_7.log
+  log type:  text
+ closed on:  19 Nov 2026, 15:48:00
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

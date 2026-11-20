@@ -1,0 +1,51 @@
+{
+  "outcomes": [
+    "current",
+    "official"
+  ],
+  "common_samples": [
+    "common_full",
+    "common_no2023",
+    "common_no2021_no2023"
+  ],
+  "exposures": [
+    "csmar",
+    "old_v2",
+    "log_combined_5km",
+    "log_assisted_combined_5km",
+    "log_old_keyword_5km"
+  ],
+  "radii": [
+    1,
+    3,
+    5,
+    10
+  ],
+  "categories": [
+    "retail",
+    "bar",
+    "nightclub",
+    "ktv",
+    "disco"
+  ],
+  "primary_SE": "firm cluster",
+  "primary_FE": [
+    "firm_id",
+    "industry_year"
+  ],
+  "primary_outcome": "official",
+  "primary_exposure": "log_combined_5km",
+  "primary_sample": "common_no2023_provisional_archive_labels",
+  "new_metadata_risk_sensitivity": "common_no2021_no2023: added before new outcome models after independent query-time audit identified old query dates in the 2021-labelled archive; no automatic re-dating",
+  "annual_outcome_scales": [
+    "within-year z-score",
+    "within-year average-rank percentile"
+  ],
+  "coordinate_scenarios": [
+    "as_provided",
+    "poi_wgs_office_wgs_assumed",
+    "poi_wgs_office_bd09_assumed"
+  ],
+  "causal_claims": false,
+  "coordinate_status": "as-provided main with explicitly hypothetical transformed scenarios"
+}

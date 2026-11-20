@@ -1,0 +1,4 @@
+# MANIFEST.csv records byte counts and SHA-256 hashes for every distributed
+# file, so end-of-line conversion must never be applied on add or checkout.
+# Disabling text detection keeps every blob byte-identical to the released file.
+* -text

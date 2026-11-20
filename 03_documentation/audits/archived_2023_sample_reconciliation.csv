@@ -1,0 +1,9 @@
+﻿step,N
+full before singleton removal,28574
+full estimated,28208
+2023 observations in full estimation sample,4009
+full estimated physically removing 2023,24199
+no2023 before fresh singleton removal,24227
+no2023 fresh singleton removal,520
+additional lost relative to deleting 2023 from full estimation,492
+no2023 estimated,23707
